@@ -4,7 +4,7 @@ import React, { memo } from 'react'
 const CustomButton = ({ btnText, onPressFunc }) => {
     return (
         <View style={styles.main}>
-            <TouchableOpacity style={styles.button} onPress={onPressFunc}>
+            <TouchableOpacity style={styles.button} onPress={()=>onPressFunc()}>
                 <Text style={styles.buttonText}>{btnText}</Text>
             </TouchableOpacity>
         </View>
