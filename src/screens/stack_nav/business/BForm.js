@@ -10,9 +10,20 @@ import BFormStep6 from './BFormStep6';
 const BForm = ({ navigation }) => {
     const [step, setStep] = useState(1);
     const [component, setComponent] = useState();
+    const [step1, setStep1] = useState();
+    const [step2, setStep2] = useState();
+    const [step3, setStep3] = useState();
+    const [step4, setStep4] = useState();
+    const [step5, setStep5] = useState();
+
+    console.log("step 1=>", step1);
+    console.log("step 2=>", step2);
+    console.log("step 3=>", step3);
+    console.log("step 4=>", step4);
+    console.log("step 5=>", step5);
 
     const prevStep = () => {
-        if(step <= 1){
+        if (step <= 1) {
             navigation.goBack();
             return;
         }
@@ -25,19 +36,19 @@ const BForm = ({ navigation }) => {
 
     useEffect(() => {
         if (step === 1) {
-            setComponent(<BFormStep1 nextStep={nextStep} />)
+            setComponent(<BFormStep1 nextStep={nextStep} setStep1={setStep1} />)
         }
         else if (step === 2) {
-            setComponent(<BFormStep2 nextStep={nextStep} />)
+            setComponent(<BFormStep2 nextStep={nextStep} setStep2={setStep2}/>)
         }
         else if (step === 3) {
-            setComponent(<BFormStep3 nextStep={nextStep} />)
+            setComponent(<BFormStep3 nextStep={nextStep} setStep3={setStep3}/>)
         }
         else if (step === 4) {
-            setComponent(<BFormStep4 nextStep={nextStep} />)
+            setComponent(<BFormStep4 nextStep={nextStep} setStep4={setStep4}/>)
         }
         else if (step === 5) {
-            setComponent(<BFormStep5 nextStep={nextStep} />)
+            setComponent(<BFormStep5 nextStep={nextStep} setStep5={setStep5}/>)
         }
         else if (step === 6) {
             setComponent(<BFormStep6 nextStep={nextStep} />)

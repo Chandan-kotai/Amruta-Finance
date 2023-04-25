@@ -62,7 +62,7 @@ const localityCat = [
     }
 ];
 
-const BFormStep3 = ({nextStep}) => {
+const BFormStep3 = ({ nextStep, setStep3 }) => {
     const [imgAllow, setImgAlllow] = useState(false);
     const [offSetup, setOffSetup] = useState(false);
     const [stock, setStock] = useState(false);
@@ -87,8 +87,78 @@ const BFormStep3 = ({nextStep}) => {
     });
     const [formError, setFormError] = useState({});
 
+    console.log("outside img", imgAllow);
+    console.log("outside ", formValue.inside_img_allow);
+
     const handleFormData = () => {
-        nextStep()
+        const validationErrors = validateForm();
+        setFormError(validationErrors);
+        // console.log("outside if", address);
+
+        if (Object.keys(validationErrors).length === 0) {
+            console.log("inside if");
+            setStep3(formValue)
+            nextStep()
+        }
+    }
+
+    const validateForm = () => {
+        const error = {}
+        const {
+            business_board_seen,
+            mismatch_temporary,
+            type_of_locality,
+            inside_img_allow,
+            if_no_reason,
+            office_setup_seen,
+            office_setup_details,
+            no_of_emp_seen,
+            stock_seen,
+            neighbor_name_1,
+            neighbor_address_1,
+            feedback_1,
+            if_no_reason_1,
+            neighbor_name_2,
+            neighbor_address_2,
+            feedback_2,
+            if_no_reason_2,
+        } = formValue;
+
+        if (!fi_reference_no) {
+            error.fi_reference_no = "Please Fill Up this Field"
+        }
+        if (!applicant_name) {
+            error.applicant_name = "Please Fill Up this Field"
+        }
+        if (!applicant_phone) {
+            error.applicant_phone = "Please Fill Up this Field"
+        }
+        if (!business_address) {
+            error.business_address = "Please Fill Up this Field"
+        }
+        if (!allocation_date_time) {
+            error.allocation_date_time = "Please Fill Up this Field"
+        }
+        if (!visit_date_time) {
+            error.visit_date_time = "Please Fill Up this Field"
+        }
+        if (!fos_name) {
+            error.fos_name = "Please Fill Up this Field"
+        }
+        if (!report_status) {
+            error.report_status = "Please Fill Up this Field"
+        }
+        if (!photo_count) {
+            error.photo_count = "Please Fill Up this Field"
+        }
+        if (!negative_sub_status) {
+            error.negative_sub_status = "Please Fill Up this Field"
+        }
+        if (!landmark) {
+            error.landmark = "Please Fill Up this Field"
+        }
+
+        return error;
     }
 
     useEffect(() => {
@@ -424,5 +494,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(8, 65, 126, 0.51)',
         backgroundColor: "#F2F1F1",
         height: 40,
-    }
+    },
+    error: {
+        color: "#f00",
+        marginLeft: 15,
+        marginTop: 3,
+        fontSize: 12,
+    },
 })

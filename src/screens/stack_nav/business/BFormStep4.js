@@ -245,5 +245,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         marginLeft: 15,
-    }
+    },
+    error: {
+        color: "#f00",
+        marginLeft: 15,
+        marginTop: 3,
+        fontSize: 12,
+    },
 })

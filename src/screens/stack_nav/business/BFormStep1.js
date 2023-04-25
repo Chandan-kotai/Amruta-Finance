@@ -55,7 +55,7 @@ const reportStatCat = [
     }
 ]
 
-const BFormStep1 = ({ nextStep }) => {
+const BFormStep1 = ({ nextStep, setStep1 }) => {
     const [formValue, setFormValue] = useState({
         applicant_id: "",
         verification_type: "",
@@ -69,21 +69,86 @@ const BFormStep1 = ({ nextStep }) => {
         report_status: "",
         photo_count: "",
         negative_sub_status: "",
-        address_confirm: isEnabled ? "Yes" : "No",
+        address_confirm: "",
         landmark: "",
         meet_person: "",
         relation_with_applicant: "",
     });
     const [formError, setFormError] = useState({})
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [address, setAddress] = useState(false);
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
 
+    // console.log("outside", formValue.address_confirm);
+
+
     const handleFormData = () => {
-        nextStep()
+        const validationErrors = validateForm();
+        setFormError(validationErrors);
+        
+        formValue.address_confirm = address ? "Yes" : "No"
+
+        if (Object.keys(validationErrors).length === 0) {
+            setStep1(formValue)
+            nextStep()
+        }
     }
 
-    // console.log("one", step);
+    const validateForm = () => {
+        const error = {}
+        const {
+            fi_reference_no,
+            applicant_name,
+            applicant_phone,
+            business_address,
+            allocation_date_time,
+            visit_date_time,
+            fos_name,
+            report_status,
+            photo_count,
+            negative_sub_status,
+            landmark,
+            meet_person,
+            relation_with_applicant,
+        } = formValue;
+
+        if (!fi_reference_no) {
+            error.fi_reference_no = "Please Fill Up this Field"
+        }
+        if (!applicant_name) {
+            error.applicant_name = "Please Fill Up this Field"
+        }
+        if (!applicant_phone) {
+            error.applicant_phone = "Please Fill Up this Field"
+        }
+        if (!business_address) {
+            error.business_address = "Please Fill Up this Field"
+        }
+        if (!allocation_date_time) {
+            error.allocation_date_time = "Please Fill Up this Field"
+        }
+        if (!visit_date_time) {
+            error.visit_date_time = "Please Fill Up this Field"
+        }
+        if (!fos_name) {
+            error.fos_name = "Please Fill Up this Field"
+        }
+        if (!report_status) {
+            error.report_status = "Please Fill Up this Field"
+        }
+        if (!photo_count) {
+            error.photo_count = "Please Fill Up this Field"
+        }
+        if (!negative_sub_status) {
+            error.negative_sub_status = "Please Fill Up this Field"
+        }
+        if (!landmark) {
+            error.landmark = "Please Fill Up this Field"
+        }
+
+        return error;
+    }
+
     useEffect(() => {
 
     }, [])
@@ -112,10 +177,10 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.verification_type}
                 // onChangeText={value => setFormValue({ ...formValue, verification_type: value })}
                 />
-                {formError.verification_type ?
+                {/* {formError.verification_type ?
                     <Text style={styles.error}>{formError.verification_type}</Text>
                     : null
-                }
+                } */}
 
                 {/* // Fl Reference No */}
                 <Text style={[styles.labels, { marginTop: 15, }]}>Fl Reference No</Text>
@@ -127,7 +192,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.fi_reference_no}
                     onChangeText={value => setFormValue({ ...formValue, fi_reference_no: value })}
                 />
-                {formError.fi_reference_no ?
+                {formError?.fi_reference_no ?
                     <Text style={styles.error}>{formError.fi_reference_no}</Text>
                     : null
                 }
@@ -142,7 +207,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.applicant_name}
                     onChangeText={value => setFormValue({ ...formValue, applicant_name: value })}
                 />
-                {formError.applicant_name ?
+                {formError?.applicant_name ?
                     <Text style={styles.error}>{formError.applicant_name}</Text>
                     : null
                 }
@@ -157,7 +222,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.applicant_phone}
                     onChangeText={value => setFormValue({ ...formValue, applicant_phone: value })}
                 />
-                {formError.applicant_phone ?
+                {formError?.applicant_phone ?
                     <Text style={styles.error}>{formError.applicant_phone}</Text>
                     : null
                 }
@@ -172,7 +237,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.business_address}
                     onChangeText={value => setFormValue({ ...formValue, business_address: value })}
                 />
-                {formError.business_address ?
+                {formError?.business_address ?
                     <Text style={styles.error}>{formError.business_address}</Text>
                     : null
                 }
@@ -207,7 +272,7 @@ const BFormStep1 = ({ nextStep }) => {
                     />
                 </View>
 
-                {formError.allocation_date_time ?
+                {formError?.allocation_date_time ?
                     <Text style={styles.error}>{formError.allocation_date_time}</Text>
                     : null
                 }
@@ -241,7 +306,7 @@ const BFormStep1 = ({ nextStep }) => {
                         }}
                     />
                 </View>
-                {formError.visit_date_time ?
+                {formError?.visit_date_time ?
                     <Text style={styles.error}>{formError.visit_date_time}</Text>
                     : null
                 }
@@ -256,7 +321,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.fos_name}
                     onChangeText={value => setFormValue({ ...formValue, fos_name: value })}
                 />
-                {formError.fos_name ?
+                {formError?.fos_name ?
                     <Text style={styles.error}>{formError.fos_name}</Text>
                     : null
                 }
@@ -278,7 +343,7 @@ const BFormStep1 = ({ nextStep }) => {
                     }}
                 />
 
-                {formError.report_status ?
+                {formError?.report_status ?
                     <Text style={styles.error}>{formError.report_status}</Text>
                     : null
                 }
@@ -293,7 +358,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.photo_count}
                     onChangeText={value => setFormValue({ ...formValue, photo_count: value })}
                 />
-                {formError.photo_count ?
+                {formError?.photo_count ?
                     <Text style={styles.error}>{formError.photo_count}</Text>
                     : null
                 }
@@ -315,13 +380,13 @@ const BFormStep1 = ({ nextStep }) => {
                     }}
                 />
 
-                {formError.negative_sub_status ?
+                {formError?.negative_sub_status ?
                     <Text style={styles.error}>{formError.negative_sub_status}</Text>
                     : null
                 }
 
                 {/* // Address Confirmed */}
-                <CustomSwitch isEnabled={isEnabled} setIsEnabled={setIsEnabled} text={"Address Confirmed"}/>
+                <CustomSwitch isEnabled={address} setIsEnabled={setAddress} text={"Address Confirmed"} />
 
                 {/* // Landmark */}
                 <Text style={[styles.labels, { marginTop: 15, }]}>Landmark</Text>
@@ -333,7 +398,7 @@ const BFormStep1 = ({ nextStep }) => {
                     value={formValue.landmark}
                     onChangeText={value => setFormValue({ ...formValue, landmark: value })}
                 />
-                {formError.landmark ?
+                {formError?.landmark ?
                     <Text style={styles.error}>{formError.landmark}</Text>
                     : null
                 }
@@ -376,5 +441,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(8, 65, 126, 0.51)',
         backgroundColor: "#F2F1F1",
         height: 40,
+    },
+    error: {
+        color: "#f00",
+        marginLeft: 15,
+        marginTop: 3,
+        fontSize: 12,
     },
 })

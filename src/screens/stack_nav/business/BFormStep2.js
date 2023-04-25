@@ -37,7 +37,7 @@ const ownerStatCat = [
     }
 ]
 
-const BFormStep2 = ({ nextStep }) => {
+const BFormStep2 = ({ nextStep, setStep2 }) => {
     const [formValue, setFormValue] = useState({
         meet_person: "",
         relation_with_applicant: "",
@@ -47,7 +47,40 @@ const BFormStep2 = ({ nextStep }) => {
     const [formError, setFormError] = useState({})
 
     const handleFormData = () => {
-        nextStep()
+        const validationErrors = validateForm();
+        setFormError(validationErrors);
+        // console.log("outside if", address);
+
+        if (Object.keys(validationErrors).length === 0) {
+            console.log("inside if");
+            setStep2(formValue)
+            nextStep()
+        }
+    }
+
+    const validateForm = () => {
+        const error = {}
+        const {
+            meet_person,
+            relation_with_applicant,
+            no_of_year,
+            ownership,
+        } = formValue;
+
+        if (!meet_person) {
+            error.meet_person = "Please Fill Up this Field"
+        }
+        if (!relation_with_applicant) {
+            error.relation_with_applicant = "Please Fill Up this Field"
+        }
+        if (!no_of_year) {
+            error.no_of_year = "Please Fill Up this Field"
+        }
+        if (!ownership) {
+            error.ownership = "Please Fill Up this Field"
+        }
+
+        return error;
     }
 
     useEffect(() => {
@@ -168,5 +201,11 @@ const styles = StyleSheet.create({
         borderColor: 'rgba(8, 65, 126, 0.51)',
         backgroundColor: "#F2F1F1",
         height: 40,
-    }
+    },
+    error: {
+        color: "#f00",
+        marginLeft: 15,
+        marginTop: 3,
+        fontSize: 12,
+    },
 })

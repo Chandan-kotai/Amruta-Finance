@@ -50,7 +50,7 @@ const Login = ({ navigation }) => {
     return (
         <SafeAreaView styles={styles.parent}>
             <ScrollView style={{ backgroundColor: "#C7FFC6", height: "100%" }}>
-                <View>
+                <View style={{}}>
                     {/* // head logo */}
                     <View style={styles.headWrap}>
                         <Image style={styles.img} source={require("../../assets/images/logo.png")} />
@@ -64,7 +64,7 @@ const Login = ({ navigation }) => {
                         <View style={styles.inputGrp}>
 
                             {/* // email */}
-                            <View style={[styles.inputBoxWrap, {  }]}>
+                            <View style={[styles.inputBoxWrap, {}]}>
 
                                 <Image style={{ marginHorizontal: 15 }} source={require("../../assets/icons/username.png")} />
 
@@ -132,8 +132,6 @@ const styles = StyleSheet.create({
     headWrap: {
         alignItems: "center",
         height: 200,
-        borderBottomLeftRadius: 120,
-        borderBottomRightRadius: 120,
         backgroundColor: "#fff",
     },
     img: {
