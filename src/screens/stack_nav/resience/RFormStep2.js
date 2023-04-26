@@ -37,7 +37,7 @@ const ownerStatCat = [
     }
 ]
 
-const BFormStep2 = ({ nextStep, setStep2 }) => {
+const RFormStep2 = ({ nextStep, setStep2 }) => {
     const [formValue, setFormValue] = useState({
         meet_person: "",
         relation_with_applicant: "",
@@ -51,7 +51,7 @@ const BFormStep2 = ({ nextStep, setStep2 }) => {
         setFormError(validationErrors);
         // console.log("outside if", address);
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validationErrors).length !== 0) {
             // console.log("inside if");
             setStep2(formValue)
             nextStep()
@@ -172,7 +172,7 @@ const BFormStep2 = ({ nextStep, setStep2 }) => {
     )
 }
 
-export default BFormStep2
+export default RFormStep2
 
 const styles = StyleSheet.create({
     inputGrp: {

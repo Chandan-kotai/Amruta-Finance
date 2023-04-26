@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import BFormStep1 from './BFormStep1';
-import BFormStep2 from './BFormStep2';
-import BFormStep3 from './BFormStep3';
-import BFormStep4 from './BFormStep4';
-import BFormStep5 from './BFormStep5';
-import BFormStep6 from './BFormStep6';
+import RFormStep1 from './RFormStep1';
+import RFormStep2 from './RFormStep2';
+import RFormStep3 from './RFormStep3';
+import RFormStep4 from './RFormStep4';
+import RFormStep5 from './RFormStep5';
+import RFormStep6 from './RFormStep6';
 
-const BForm = ({ navigation, route }) => {
+const RForm = ({ navigation }) => {
     const [step, setStep] = useState(1);
     const [component, setComponent] = useState();
     const [step1, setStep1] = useState();
@@ -15,7 +15,6 @@ const BForm = ({ navigation, route }) => {
     const [step3, setStep3] = useState();
     const [step4, setStep4] = useState();
     const [step5, setStep5] = useState();
-    const { id, type } = route?.params;
 
     // console.log("step 1=>", step1);
     // console.log("step 2=>", step2);
@@ -37,22 +36,22 @@ const BForm = ({ navigation, route }) => {
 
     useEffect(() => {
         if (step === 1) {
-            setComponent(<BFormStep1 nextStep={nextStep} setStep1={setStep1} id={id} type={type} />)
+            setComponent(<RFormStep1 nextStep={nextStep} setStep1={setStep1} />)
         }
         else if (step === 2) {
-            setComponent(<BFormStep2 nextStep={nextStep} setStep2={setStep2} />)
+            setComponent(<RFormStep2 nextStep={nextStep} setStep2={setStep2}/>)
         }
         else if (step === 3) {
-            setComponent(<BFormStep3 nextStep={nextStep} setStep3={setStep3} />)
+            setComponent(<RFormStep3 nextStep={nextStep} setStep3={setStep3}/>)
         }
         else if (step === 4) {
-            setComponent(<BFormStep4 nextStep={nextStep} setStep4={setStep4} />)
+            setComponent(<RFormStep4 nextStep={nextStep} setStep4={setStep4}/>)
         }
         else if (step === 5) {
-            setComponent(<BFormStep5 nextStep={nextStep} setStep5={setStep5} />)
+            setComponent(<RFormStep5 nextStep={nextStep} setStep5={setStep5}/>)
         }
         else if (step === 6) {
-            setComponent(<BFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} />)
+            setComponent(<RFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} />)
         }
     }, [step]);
 
@@ -72,7 +71,7 @@ const BForm = ({ navigation, route }) => {
                     <Image style={styles.img} source={require("../../../assets/images/logo.png")} />
                 </View>
 
-                <Text style={styles.heading}>Business Verification Report</Text>
+                <Text style={styles.heading}>Residence Verification Report</Text>
 
                 {/* Steps */}
                 <View style={styles.stepsWrap}>
@@ -130,7 +129,7 @@ const BForm = ({ navigation, route }) => {
     )
 }
 
-export default BForm;
+export default RForm;
 
 const styles = StyleSheet.create({
     parent: {

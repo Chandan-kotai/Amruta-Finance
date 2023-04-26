@@ -4,7 +4,7 @@ import CustomButton from '../../../utils/CustomButton';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 
-const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
+const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
   const [formValue, setFormValue] = useState({
     verifier_name: "",
     summary: "",
@@ -12,7 +12,6 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
   });
 
   const [formError, setFormError] = useState({})
-  // console.log(step5.sign_board_pic[0]);
 
   const handleFormData = () => {
     const validationErrors = validateForm();
@@ -44,15 +43,16 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
       formData.append('ownership', step2.ownership);
 
       // step 3
-      formData.append('business_board_seen', step3.business_board_seen);
+      formData.append('name_plate_seen', step3.name_plate_seen);
       formData.append('mismatch_temporary', step3.mismatch_temporary);
       formData.append('type_of_locality', step3.type_of_locality);
+      formData.append('residence_type', step3.residence_type);
+      formData.append('exterior_details', step3.exterior_details);
       formData.append('inside_img_allow', step3.inside_img_allow);
       formData.append('if_no_reason', step3.if_no_reason);
-      formData.append('office_setup_seen', step3.office_setup_seen);
-      formData.append('office_setup_details', step3.office_setup_details);
-      formData.append('no_of_emp_seen', step3.no_of_emp_seen);
-      formData.append('stock_seen', step3.stock_seen);
+      formData.append('setup_details', step3.setup_details);
+      formData.append('is_applicant_stay', step3.is_applicant_stay);
+      formData.append('if_not_stay_reason', step3.if_not_stay_reason);
       formData.append('neighbor_name_1', step3.neighbor_name_1);
       formData.append('neighbor_address_1', step3.neighbor_address_1);
       formData.append('feedback_1', step3.feedback_1);
@@ -78,37 +78,37 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
       formData.append('others_reason', step4.others_reason);
 
       // step 5
-      formData.append('sign_board_pic', {
-        type: step5?.sign_board_pic[0].type,
-        uri: step5?.sign_board_pic[0]?.uri,
-        name: step5?.sign_board_pic[0]?.fileName
+      formData.append('building_pic', {
+        type: step5?.building_pic[0].type,
+        uri: step5?.building_pic[0]?.uri,
+        name: step5?.building_pic[0]?.fileName
       });
 
-      formData.append('stock_pic', {
-        type: step5?.stock_pic[0].type,
-        uri: step5?.stock_pic[0]?.uri,
-        name: step5?.stock_pic[0]?.fileName
+      formData.append('name_plate_pic', {
+        type: step5?.name_plate_pic[0].type,
+        uri: step5?.name_plate_pic[0]?.uri,
+        name: step5?.name_plate_pic[0]?.fileName
       });
 
-      formData.append('office_setup_pic',{
-        type: step5?.office_setup_pic[0].type,
-        uri: step5?.office_setup_pic[0]?.uri,
-        name: step5?.office_setup_pic[0]?.fileName
+      formData.append('residence_setup_pic', {
+        type: step5?.residence_setup_pic[0].type,
+        uri: step5?.residence_setup_pic[0]?.uri,
+        name: step5?.residence_setup_pic[0]?.fileName
       });
 
-      formData.append('landmark_pic',{
+      formData.append('landmark_pic', {
         type: step5?.landmark_pic[0].type,
         uri: step5?.landmark_pic[0]?.uri,
         name: step5?.landmark_pic[0]?.fileName
       });
 
-      formData.append('kyc_pic',{
+      formData.append('kyc_pic', {
         type: step5?.kyc_pic[0].type,
         uri: step5?.kyc_pic[0]?.uri,
         name: step5?.kyc_pic[0]?.fileName
       });
 
-      formData.append('customer_pic',{
+      formData.append('customer_pic', {
         type: step5?.customer_pic[0].type,
         uri: step5?.customer_pic[0]?.uri,
         name: step5?.customer_pic[0]?.fileName
@@ -146,13 +146,6 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
     return error;
   }
 
-  // const sendIntent = async () => {
-  //   await Linking.sendIntent({
-  //     action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-  //   });
-
-  // }
-
   const sendFormData = async (formData) => {
     var config = {
       method: "post",
@@ -178,6 +171,13 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
     }
 
   }
+
+  // const sendIntent = async () => {
+  //   await Linking.sendIntent({
+  //     action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+  //   });
+
+  // }
 
   const requestLocationPermission = async () => {
     try {
@@ -217,6 +217,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 200, marginTop: 20 }}>
       <View style={styles.inputGrp}>
+
         {/* // Verifier Name */}
         <Text style={[styles.labels, { marginTop: 15, }]}>Verifier Name</Text>
         <TextInput
@@ -278,7 +279,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
   )
 }
 
-export default BFormStep6;
+export default RFormStep6;
 
 const styles = StyleSheet.create({
   inputGrp: {

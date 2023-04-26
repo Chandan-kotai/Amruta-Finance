@@ -39,22 +39,37 @@ const businessBoardCat = [
     }
 ];
 
+const residenceCat = [
+    {
+        label: "Flat",
+        value: "Flat"
+    },
+    {
+        label: "Villa",
+        value: "Villa"
+    },
+    {
+        label: "Independent House",
+        value: "Independent House"
+    },
+    {
+        label: "PG",
+        value: "PG"
+    }
+];
+
 const localityCat = [
     {
-        label: "Industrial",
-        value: "Industrial"
+        label: "Residential Society",
+        value: "Residential Society"
     },
     {
-        label: "Commercial",
-        value: "Commercial"
+        label: "Slum",
+        value: "Slum"
     },
     {
-        label: "Shopping Mall",
-        value: "Shopping Mall"
-    },
-    {
-        label: "Residential",
-        value: "Residential"
+        label: "Chawl",
+        value: "Chawl"
     },
     {
         label: "Others",
@@ -62,20 +77,55 @@ const localityCat = [
     }
 ];
 
-const BFormStep3 = ({ nextStep, setStep3 }) => {
+const exteriorCat = [
+    {
+        label: "Pukka",
+        value: "Pukka"
+    },
+    {
+        label: "Temporary",
+        value: "Temporary"
+    },
+    {
+        label: "Tin Shed",
+        value: "Tin Shed"
+    }
+];
+
+const setupCat = [
+    {
+        label: "Good",
+        value: "Good"
+    },
+    {
+        label: "Average",
+        value: "Average"
+    },
+    {
+        label: "Low",
+        value: "Low"
+    },
+    {
+        label: "Temporary",
+        value: "Temporary"
+    }
+];
+
+const RFormStep3 = ({ nextStep, setStep3 }) => {
     const [imgAllow, setImgAlllow] = useState(false);
-    const [offSetup, setOffSetup] = useState(false);
-    const [stock, setStock] = useState(false);
+    const [stay, setStay] = useState(false);
+
     const [formValue, setFormValue] = useState({
-        business_board_seen: "",
+        name_plate_seen: "",
         mismatch_temporary: "",
         type_of_locality: "",
+        residence_type: "",
+        exterior_details: "",
         inside_img_allow: "",
         if_no_reason: "",
-        office_setup_seen: "",
-        office_setup_details: "",
-        no_of_emp_seen: "",
-        stock_seen: "",
+        setup_details: "",
+        is_applicant_stay: "",
+        if_not_stay_reason: "",
         neighbor_name_1: "",
         neighbor_address_1: "",
         feedback_1: "",
@@ -93,10 +143,9 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
         // console.log("outside if", address);
 
         formValue.inside_img_allow = imgAllow ? "Yes" : "No";
-        formValue.office_setup_seen = offSetup ? "Yes" : "No";
-        formValue.stock_seen = stock ? "Yes" : "No";
+        formValue.is_applicant_stay = stay ? "Yes" : "No";
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validationErrors).length !== 0) {
             // console.log("inside if");
             setStep3(formValue)
             nextStep()
@@ -106,15 +155,16 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
     const validateForm = () => {
         const error = {}
         const {
-            business_board_seen,
+            name_plate_seen,
             mismatch_temporary,
             type_of_locality,
+            residence_type,
+            exterior_details,
             inside_img_allow,
             if_no_reason,
-            office_setup_seen,
-            office_setup_details,
-            no_of_emp_seen,
-            stock_seen,
+            setup_details,
+            is_applicant_stay,
+            if_not_stay_reason,
             neighbor_name_1,
             neighbor_address_1,
             feedback_1,
@@ -125,29 +175,35 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             if_no_reason_2,
         } = formValue;
 
-        if (!business_board_seen) {
-            error.business_board_seen = "Please Fill Up this Field"
+        if (!name_plate_seen) {
+            error.name_plate_seen = "Please Fill Up this Field"
         }
-        if(business_board_seen === "Mismatch" || business_board_seen === "Temporary"){
-            if(!mismatch_temporary){
+        if (name_plate_seen === "Mismatch" || name_plate_seen === "Temporary") {
+            if (!mismatch_temporary) {
                 error.mismatch_temporary = "Please Fill Up this Field"
             }
         }
         if (!type_of_locality) {
             error.type_of_locality = "Please Fill Up this Field"
         }
+        if (!residence_type) {
+            error.residence_type = "Please Fill Up this Field"
+        }
+        if (!exterior_details) {
+            error.exterior_details = "Please Fill Up this Field"
+        }
         if (!imgAllow) {
-            if(!if_no_reason){
+            if (!if_no_reason) {
                 error.if_no_reason = "Please Fill Up this Field"
             }
         }
-        if (offSetup) {
-            if(!office_setup_details){
-                error.office_setup_details = "Please Fill Up this Field"
-            }
+        if (!setup_details) {
+            error.setup_details = "Please Fill Up this Field"
         }
-        if (!no_of_emp_seen) {
-            error.no_of_emp_seen = "Please Fill Up this Field"
+        if (!stay) {
+            if (!if_not_stay_reason) {
+                error.if_not_stay_reason = "Please Fill Up this Field"
+            }
         }
         if (!neighbor_name_1) {
             error.neighbor_name_1 = "Please Fill Up this Field"
@@ -159,7 +215,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             error.feedback_1 = "Please Fill Up this Field"
         }
         if (feedback_1 === "Negative") {
-            if(!if_no_reason_1){
+            if (!if_no_reason_1) {
                 error.if_no_reason_1 = "Please Fill Up this Field"
             }
         }
@@ -173,7 +229,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             error.feedback_2 = "Please Fill Up this Field"
         }
         if (feedback_2 === "Negative") {
-            if(!if_no_reason_2){
+            if (!if_no_reason_2) {
                 error.if_no_reason_2 = "Please Fill Up this Field"
             }
         }
@@ -188,8 +244,8 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 200, marginTop: 20 }}>
             <View style={styles.inputGrp}>
-                {/* // Is Business board seen */}
-                <Text style={[styles.labels, { marginTop: 15, }]}>Is Business board seen</Text>
+                {/* // Is Name Plate Seen */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>Is Name Plate Seen</Text>
                 <Dropdown
                     style={styles.dropdownBox}
                     data={businessBoardCat}
@@ -199,22 +255,22 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
                     selectedTextStyle={{ color: "#000", fontSize: 14 }}
                     labelField="label"
                     valueField="value"
-                    value={formValue.business_board_seen}
+                    value={formValue.name_plate_seen}
                     onChange={item => {
-                        setFormValue({ ...formValue, business_board_seen: item.value })
+                        setFormValue({ ...formValue, name_plate_seen: item.value })
                     }}
                 />
-                {formError?.business_board_seen ?
-                    <Text style={styles.error}>{formError?.business_board_seen}</Text>
+                {formError?.name_plate_seen ?
+                    <Text style={styles.error}>{formError?.name_plate_seen}</Text>
                     : null
                 }
 
                 {/* // If mismatch/Temporary,pls specify */}
-                {formValue.business_board_seen === "Mismatch" || formValue.business_board_seen === "Temporary" ?
+                {formValue.name_plate_seen === "Mismatch" || formValue.name_plate_seen === "Temporary" ?
                     <Text style={[styles.labels, { marginTop: 15, }]}>If Mismatch/Temporary Please Specify</Text>
                     : null
                 }
-                {formValue.business_board_seen === "Mismatch" || formValue.business_board_seen === "Temporary" ?
+                {formValue.name_plate_seen === "Mismatch" || formValue.name_plate_seen === "Temporary" ?
                     <TextInput
                         style={styles.inputBox}
                         autoCapitalize="none"
@@ -251,6 +307,48 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
                     : null
                 }
 
+                {/* // Residence type */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>Residence type</Text>
+                <Dropdown
+                    style={styles.dropdownBox}
+                    data={residenceCat}
+                    placeholder='Select...'
+                    containerStyle={{ borderRadius: 20 }}
+                    itemContainerStyle={{ borderRadius: 20 }}
+                    selectedTextStyle={{ color: "#000", fontSize: 14 }}
+                    labelField="label"
+                    valueField="value"
+                    value={formValue.residence_type}
+                    onChange={item => {
+                        setFormValue({ ...formValue, residence_type: item.value })
+                    }}
+                />
+                {formError?.residence_type ?
+                    <Text style={styles.error}>{formError?.residence_type}</Text>
+                    : null
+                }
+
+                {/* // Exterior Details */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>Exterior Details</Text>
+                <Dropdown
+                    style={styles.dropdownBox}
+                    data={exteriorCat}
+                    placeholder='Select...'
+                    containerStyle={{ borderRadius: 20 }}
+                    itemContainerStyle={{ borderRadius: 20 }}
+                    selectedTextStyle={{ color: "#000", fontSize: 14 }}
+                    labelField="label"
+                    valueField="value"
+                    value={formValue.exterior_details}
+                    onChange={item => {
+                        setFormValue({ ...formValue, exterior_details: item.value })
+                    }}
+                />
+                {formError?.exterior_details ?
+                    <Text style={styles.error}>{formError?.exterior_details}</Text>
+                    : null
+                }
+
                 {/* Entry and Inside Images Allowed */}
                 <CustomSwitch isEnabled={imgAllow} setIsEnabled={setImgAlllow} text={"Entry and Inside Images Allowed"} />
 
@@ -275,62 +373,50 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
                     : null
                 }
 
-                {/* Office setup Seen */}
-                <CustomSwitch isEnabled={offSetup} setIsEnabled={setOffSetup} text={"Office setup Seen"} />
-
-                {/* // Office Setup details */}
-                {offSetup ?
-                    <Text style={[styles.labels, { marginTop: 15, }]}>Office Setup details</Text>
+                {/* // Setup Details (Interior) */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>Setup Details (Interior)</Text>
+                <Dropdown
+                    style={styles.dropdownBox}
+                    data={setupCat}
+                    placeholder='Select...'
+                    containerStyle={{ borderRadius: 20 }}
+                    itemContainerStyle={{ borderRadius: 20 }}
+                    selectedTextStyle={{ color: "#000", fontSize: 14 }}
+                    labelField="label"
+                    valueField="value"
+                    value={formValue.setup_details}
+                    onChange={item => {
+                        setFormValue({ ...formValue, setup_details: item.value })
+                    }}
+                />
+                {formError?.setup_details ?
+                    <Text style={styles.error}>{formError?.setup_details}</Text>
                     : null
                 }
-                {offSetup ?
-                    <Dropdown
-                        style={styles.dropdownBox}
-                        data={[
-                            {
-                                label: "Permanent",
-                                value: "Permanent"
-                            },
-                            {
-                                label: "Temporary",
-                                value: "Temporary"
-                            },
-                        ]}
-                        placeholder='Select...'
-                        containerStyle={{ borderRadius: 20 }}
-                        itemContainerStyle={{ borderRadius: 20 }}
-                        selectedTextStyle={{ color: "#000", fontSize: 14 }}
-                        labelField="label"
-                        valueField="value"
-                        value={formValue.office_setup_details}
-                        onChange={item => {
-                            setFormValue({ ...formValue, office_setup_details: item.value })
-                        }}
+
+                {/* Does Applicant Stay at the Address */}
+                <CustomSwitch isEnabled={stay} setIsEnabled={setStay} text={"Does Applicant Stay at the Address"} />
+
+                {/* // If No, Please Specify Reason */}
+                {!stay ?
+                    <Text style={[styles.labels, { marginTop: 15, }]}>If No, Please Specify Reason</Text>
+                    : null
+                }
+                {!stay ?
+                    <TextInput
+                        style={styles.inputBox}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder={"Enter Reason"}
+                        value={formValue.if_not_stay_reason}
+                        onChangeText={value => setFormValue({ ...formValue, if_not_stay_reason: value })}
                     />
                     : null
                 }
-                {formError?.office_setup_details ?
-                    <Text style={styles.error}>{formError?.office_setup_details}</Text>
+                {formError?.if_not_stay_reason ?
+                    <Text style={styles.error}>{formError?.if_not_stay_reason}</Text>
                     : null
                 }
-
-                {/* // Total No of Employees Seen */}
-                <Text style={[styles.labels, { marginTop: 15, }]}>Total No of Employees Seen</Text>
-                <TextInput
-                    style={styles.inputBox}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder={"Enter No of Employees Seen"}
-                    value={formValue.no_of_emp_seen}
-                    onChangeText={value => setFormValue({ ...formValue, no_of_emp_seen: value })}
-                />
-                {formError?.no_of_emp_seen ?
-                    <Text style={styles.error}>{formError?.no_of_emp_seen}</Text>
-                    : null
-                }
-
-                {/* Stock Seen */}
-                <CustomSwitch isEnabled={stock} setIsEnabled={setStock} text={"Stock Seen"} />
 
                 {/* // Neighbor Name 1  */}
                 <Text style={[styles.labels, { marginTop: 15, }]}>Neighbor Name 1 </Text>
@@ -385,7 +471,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
 
                 {/* // If No,please specify Reason */}
                 {formValue.feedback_1 === "Negative" ?
-                    <Text style={[styles.labels, { marginTop: 15, }]}>If No Please Specify Reason</Text>
+                    <Text style={[styles.labels, { marginTop: 15, }]}>If Negative Please Specify Reason</Text>
                     : null
                 }
                 {formValue.feedback_1 === "Negative" ?
@@ -457,7 +543,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
 
                 {/* // If No,please specify Reason */}
                 {formValue.feedback_2 === "Negative" ?
-                    <Text style={[styles.labels, { marginTop: 15, }]}>If No,please specify Reason</Text>
+                    <Text style={[styles.labels, { marginTop: 15, }]}>If Negative Please Specify Reason</Text>
                     : null
                 }
                 {formValue.feedback_2 === "Negative" ?
@@ -485,7 +571,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
     )
 }
 
-export default BFormStep3
+export default RFormStep3
 
 const styles = StyleSheet.create({
     inputGrp: {

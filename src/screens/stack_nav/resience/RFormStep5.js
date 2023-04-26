@@ -5,12 +5,12 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import CustomButton from '../../../utils/CustomButton';
 
-const BFormStep5 = ({ nextStep, setStep5 }) => {
+const RFormStep5 = ({ nextStep, setStep5 }) => {
   const refRBSheet = useRef();
   const [images, setImages] = useState({
-    sign_board_pic: "",
-    stock_pic: "",
-    office_setup_pic: [],
+    building_pic: "",
+    name_plate_pic: "",
+    residence_setup_pic: [],
     landmark_pic: "",
     kyc_pic: "",
     customer_pic: ""
@@ -18,7 +18,7 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
   const [option, setOption] = useState("");
   const pics = [];
 
-  // console.log("image from state=>", images.office_setup_pic);
+  // console.log("image from state=>", images);
   // console.log("image from var pics=>", pics);
 
   const openRBSheet = (value) => {
@@ -28,14 +28,14 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
 
   const setFile = (image) => {
     if (option === "optn1") {
-      setImages({ ...images, sign_board_pic: image })
+      setImages({ ...images, building_pic: image })
     }
     if (option === "optn2") {
-      setImages({ ...images, stock_pic: image })
+      setImages({ ...images, name_plate_pic: image })
     }
     if (option === "optn3") {
       pics.push(image);
-      setImages({ ...images, office_setup_pic: pics })
+      setImages({ ...images, residence_setup_pic: pics })
     }
     if (option === "optn4") {
       setImages({ ...images, landmark_pic: image })
@@ -54,7 +54,7 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         const res = await launchCamera({ saveToPhotos: true, mediaType: "photo" })
-        // console.log("image from camera=>", res);
+        // console.log("image from camera=>", res?.assets);
         setFile(res?.assets)
         closeRBSheet()
       } else {
@@ -105,7 +105,7 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
     const validationErrors = validateForm();
     setFormError(validationErrors);
 
-    if (Object.keys(validationErrors).length === 0) {
+    if (Object.keys(validationErrors).length !== 0) {
       setStep5(images)
       nextStep()
     }
@@ -115,26 +115,26 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
     const error = {}
 
     const {
-      sign_board_pic,
-      stock_pic,
-      office_setup_pic,
+      building_pic,
+      name_plate_pic,
+      residence_setup_pic,
       landmark_pic,
       kyc_pic,
       customer_pic
     } = images;
 
-    if (!sign_board_pic) {
-      error.sign_board_pic = "This Field is Required"
+    if (!building_pic) {
+      error.building_pic = "This Field is Required"
     }
-    if (!stock_pic) {
-      error.stock_pic = "This Field is Required"
+    if (!name_plate_pic) {
+      error.name_plate_pic = "This Field is Required"
     }
-    if (office_setup_pic?.length === 0) {
-      error.office_setup_pic = "This Field is Required"
+    if (residence_setup_pic?.length === 0) {
+      error.residence_setup_pic = "This Field is Required"
     }
-    // if (office_setup_pic?.length === 1) {
-    //   error.office_setup_pic = "Minimum 2 Photo Required"
-    // }
+    if (residence_setup_pic?.length === 1) {
+      error.residence_setup_pic = "Minimum 2 Photo Required"
+    }
     if (!landmark_pic) {
       error.landmark_pic = "This Field is Required"
     }
@@ -160,14 +160,13 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
       {/* body */}
       <View style={{ marginHorizontal: 10, }}>
 
-        {/* Sign board pic with building entranc */}
+        {/* Outside Photo of Building or Locality */}
         <View style={styles.itemContainer}>
           <View>
-            <Text style={{ fontSize: 16 }}>Sign board pic with Building Entrance</Text>
-            <Text style={{ fontSize: 11 }}>(Business/Visiting card photo if sign board is missing)</Text>
+            <Text style={{ fontSize: 16 }}>Outside Photo of Building or Locality</Text>
           </View>
 
-          {!images?.sign_board_pic?.length ?
+          {!images?.building_pic?.length ?
             <TouchableOpacity onPress={() => openRBSheet("optn1")}>
               <View style={styles.imgWrap}>
                 <Image style={{ width: 15, height: 15 }} source={require("../../../assets/icons/camera.png")} />
@@ -179,18 +178,18 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
             </View>
           }
         </View>
-        {formError?.sign_board_pic ?
-          <Text style={styles.error}>{formError?.sign_board_pic}</Text>
+        {formError?.building_pic ?
+          <Text style={styles.error}>{formError?.building_pic}</Text>
           : null
         }
 
-        {/* Stock Pics */}
+        {/* Name Plate Photo with Entrance */}
         <View style={styles.itemContainer}>
           <View>
-            <Text style={{ fontSize: 16 }}>Stock Pics</Text>
+            <Text style={{ fontSize: 16 }}>Name Plate Photo with Entrance</Text>
           </View>
 
-          {!images?.stock_pic?.length ?
+          {!images?.name_plate_pic?.length ?
             <TouchableOpacity onPress={() => openRBSheet("optn2")}>
               <View style={styles.imgWrap}>
                 <Image style={{ width: 15, height: 15 }} source={require("../../../assets/icons/camera.png")} />
@@ -202,19 +201,19 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
             </View>
           }
         </View>
-        {formError?.stock_pic ?
-          <Text style={styles.error}>{formError?.stock_pic}</Text>
+        {formError?.name_plate_pic ?
+          <Text style={styles.error}>{formError?.name_plate_pic}</Text>
           : null
         }
 
-        {/* Office Setup */}
+        {/* Residence Setup Pics */}
         <View style={styles.itemContainer}>
           <View style={{marginBottom: 3}}>
-            <Text style={{ fontSize: 16 }}>Office Setup</Text>
-            <Text style={{ fontSize: 11 }}>(Minimum 2 photo from differnt angle)</Text>
+            <Text style={{ fontSize: 16 }}>Residence Setup Pics</Text>
+            <Text style={{ fontSize: 11 }}>(Minimum 2 Interior Pics)</Text>
           </View>
 
-          {!images?.office_setup_pic?.length < 2 ?
+          {!images?.residence_setup_pic?.length < 2 ?
             <TouchableOpacity onPress={() => openRBSheet("optn3")}>
               <View style={styles.imgWrap}>
                 <Image style={{ width: 15, height: 15 }} source={require("../../../assets/icons/camera.png")} />
@@ -226,15 +225,15 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
             </View>
           }
         </View>
-        {formError?.office_setup_pic ?
-          <Text style={styles.error}>{formError?.office_setup_pic}</Text>
+        {formError?.residence_setup_pic ?
+          <Text style={styles.error}>{formError?.residence_setup_pic}</Text>
           : null
         }
 
-        {/* Photos of nearest landmark/Locality */}
+        {/* Photos of Nearest Landmark */}
         <View style={styles.itemContainer}>
           <View>
-            <Text style={{ fontSize: 16 }}>Photos of nearest landmark/Locality</Text>
+            <Text style={{ fontSize: 16 }}>Photos of Nearest Landmark</Text>
           </View>
 
           {!images?.landmark_pic?.length ?
@@ -352,7 +351,7 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
   )
 }
 
-export default BFormStep5;
+export default RFormStep5;
 
 const styles = StyleSheet.create({
   heading: {

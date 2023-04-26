@@ -55,10 +55,10 @@ const reportStatCat = [
     }
 ]
 
-const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
+const RFormStep1 = ({ nextStep, setStep1 }) => {
     const [formValue, setFormValue] = useState({
-        applicant_id: id,
-        verification_type: type,
+        applicant_id: "",
+        verification_type: "",
         fi_reference_no: "",
         applicant_name: "",
         applicant_phone: "",
@@ -70,7 +70,7 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
         photo_count: "",
         negative_sub_status: "",
         address_confirm: "",
-        landmark: "",
+        landmark: ""
     });
     const [formError, setFormError] = useState({})
     const [address, setAddress] = useState(false);
@@ -160,7 +160,6 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
-                    editable={false}
                     autoCorrect={false}
                     placeholder={"Enter Applicant Id"}
                     value={formValue.applicant_id}
@@ -170,13 +169,16 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
                 <Text style={[styles.labels, { marginTop: 15, }]}>Verification Type</Text>
                 <TextInput
                     style={styles.inputBox}
-                    selectedTextStyle={{color: "#000"}}
                     autoCapitalize="none"
-                    editable={false}
                     autoCorrect={false}
                     placeholder={"Verification Type"}
                     value={formValue.verification_type}
+                // onChangeText={value => setFormValue({ ...formValue, verification_type: value })}
                 />
+                {/* {formError.verification_type ?
+                    <Text style={styles.error}>{formError.verification_type}</Text>
+                    : null
+                } */}
 
                 {/* // Fl Reference No */}
                 <Text style={[styles.labels, { marginTop: 15, }]}>Fl Reference No</Text>
@@ -214,7 +216,6 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    maxLength={10}
                     placeholder={"Enter Applicant’s Phone Number"}
                     value={formValue.applicant_phone}
                     onChangeText={value => setFormValue({ ...formValue, applicant_phone: value })}
@@ -409,7 +410,7 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
     )
 }
 
-export default BFormStep1
+export default RFormStep1
 
 const styles = StyleSheet.create({
     inputGrp: {

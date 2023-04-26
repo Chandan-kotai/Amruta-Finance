@@ -36,7 +36,7 @@ const Dashboard = ({ navigation }) => {
                             setOpen(false)
                         }}
                     />
-                    
+
                     {/* // menu */}
                     <TouchableOpacity>
                         <Image style={{ width: 20, height: 20 }} source={require("../../assets/icons/menu.png")} />
@@ -75,16 +75,17 @@ const Dashboard = ({ navigation }) => {
                     </TouchableOpacity>
 
                     {/* // content */}
-                    <TouchableOpacity onPress={()=> navigation.navigate("step1")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("bform", { id: "122365", type: "Office" })}>
                         <View style={styles.content}>
                             <Text style={{ color: "#000" }}>122365</Text>
                             <Text style={{ color: "#EB3A79" }}>Pending</Text>
                         </View>
                     </TouchableOpacity>
+
                     {/* // content */}
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("rform", { id: "122363", type: "Residencial" })}>
                         <View style={styles.content}>
-                            <Text style={{ color: "#000" }}>122365</Text>
+                            <Text style={{ color: "#000" }}>122363</Text>
                             <Text style={{ color: "#EB3A79" }}>Pending</Text>
                         </View>
                     </TouchableOpacity>

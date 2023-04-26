@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CustomSwitch from '../../../utils/CustomSwitch';
 import CustomButton from '../../../utils/CustomButton';
 
-const BFormStep4 = ({ nextStep, setStep4 }) => {
+const RFormStep4 = ({ nextStep, setStep4 }) => {
     const [labour, setLabour] = useState(false);
     const [pep, setPep] = useState(false);
     const [gambling, setGambling] = useState(false);
@@ -12,17 +12,17 @@ const BFormStep4 = ({ nextStep, setStep4 }) => {
     const [arms, setArms] = useState(false);
 
     const [formValue, setFormValue] = useState({
-        is_labour: "",
+        is_labour: labour ? "Yes" : "No",
         is_labour_reason: "",
-        is_pep: "",
+        is_pep: pep ? "Yes" : "No",
         is_pep_reason: "",
-        is_gambling: "",
+        is_gambling: gambling ? "Yes" : "No",
         is_gambling_reason: "",
-        is_tobaco: "",
+        is_tobaco: tobaco ? "Yes" : "No",
         is_tobaco_reason: "",
-        is_pornography: "",
+        is_pornography: pornography ? "Yes" : "No",
         is_pornography_reason: "",
-        is_arms: "",
+        is_arms: arms ? "Yes" : "No",
         is_arms_reason: "",
         others_reason: ""
     });
@@ -40,7 +40,7 @@ const BFormStep4 = ({ nextStep, setStep4 }) => {
         formValue.is_pornography = pornography ? "Yes" : "No";
         formValue.is_arms = arms ? "Yes" : "No";
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validationErrors).length !== 0) {
             // console.log("inside if");
             setStep4(formValue)
             nextStep()
@@ -89,7 +89,10 @@ const BFormStep4 = ({ nextStep, setStep4 }) => {
                 error.is_arms_reason = "Please Fill Up this Field"
             }
         }
-
+        if (!others_reason) {
+            error.others_reason = "Please Fill Up this Field"
+        }
+        
         return error;
     }
 
@@ -272,7 +275,7 @@ const BFormStep4 = ({ nextStep, setStep4 }) => {
     )
 }
 
-export default BFormStep4
+export default RFormStep4
 
 const styles = StyleSheet.create({
     inputGrp: {
