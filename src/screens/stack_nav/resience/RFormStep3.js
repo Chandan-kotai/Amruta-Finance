@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../../utils/CustomButton';
 import CustomSwitch from '../../../utils/CustomSwitch';
+import Toast from 'react-native-toast-message'
 
 
 const feedbackCat = [
@@ -148,6 +149,10 @@ const RFormStep3 = ({ nextStep, setStep3 }) => {
         if (Object.keys(validationErrors).length !== 0) {
             // console.log("inside if");
             setStep3(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Data Saved Successfully",
+            })
             nextStep()
         }
     }

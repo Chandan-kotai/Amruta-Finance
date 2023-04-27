@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react'
 import CustomButton from '../../../utils/CustomButton';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import CustomLoader from '../../../utils/CustomLoader';
 
-const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
+const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username }) => {
   const [formValue, setFormValue] = useState({
     verifier_name: "",
     summary: "",
     lat_long: ""
   });
-
+  const [status, setStatus] = useState(false)
   const [formError, setFormError] = useState({})
   // console.log(step5.sign_board_pic[0]);
 
@@ -90,25 +92,32 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
         name: step5?.stock_pic[0]?.fileName
       });
 
-      formData.append('office_setup_pic',{
-        type: step5?.office_setup_pic[0].type,
-        uri: step5?.office_setup_pic[0]?.uri,
-        name: step5?.office_setup_pic[0]?.fileName
+      // formData.append('office_setup_pic',{
+      //   type: step5?.office_setup_pic[0].type,
+      //   uri: step5?.office_setup_pic[0]?.uri,
+      //   name: step5?.office_setup_pic[0]?.fileName
+      // });
+      step5?.office_setup_pic?.forEach((image, index) => {
+        formData.append(`office_setup_pic_${index}`, {
+          uri: image.uri,
+          type: image.type,
+          name: image.fileName
+        });
       });
 
-      formData.append('landmark_pic',{
+      formData.append('landmark_pic', {
         type: step5?.landmark_pic[0].type,
         uri: step5?.landmark_pic[0]?.uri,
         name: step5?.landmark_pic[0]?.fileName
       });
 
-      formData.append('kyc_pic',{
+      formData.append('kyc_pic', {
         type: step5?.kyc_pic[0].type,
         uri: step5?.kyc_pic[0]?.uri,
         name: step5?.kyc_pic[0]?.fileName
       });
 
-      formData.append('customer_pic',{
+      formData.append('customer_pic', {
         type: step5?.customer_pic[0].type,
         uri: step5?.customer_pic[0]?.uri,
         name: step5?.customer_pic[0]?.fileName
@@ -118,6 +127,8 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
       formData.append('verifier_name', formValue.verifier_name);
       formData.append('summary', formValue.summary);
       formData.append('lat_long', formValue.lat_long);
+
+      formData.append('username', username)
 
       // console.log("form data =>", formData);
       sendFormData(formData)
@@ -166,15 +177,25 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
     console.log("form data func =>", formData);
 
     try {
+      setStatus(true)
       const res = await axios(config);
-      console.log("server response=>", res.data);
+      setStatus(false)
+      // console.log("server response=>", res.data);
       if (res?.data?.result === "success") {
-        // navigation.replace("fmsg")
+        navigation.replace("fmsg")
       } else {
-        Alert.alert("Something Went Wrong!!")
+        Toast.show({
+          type: "info",
+          text1: "Something Went Wrong. Pleaase Try Again",
+        })
       }
     } catch (exc) {
-      console.log("error=>", exc);
+      // console.log("error=>", exc);
+      Toast.show({
+        type: "error",
+        text1: exc.message,
+        text2: "Something Went Wrong. Pleaase Try Again",
+      })
     }
 
   }
@@ -274,6 +295,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
           <CustomButton btnText={"Submit"} onPressFunc={handleFormData} />
         </View>
       </View>
+      <CustomLoader loader={status}/>
     </ScrollView>
   )
 }

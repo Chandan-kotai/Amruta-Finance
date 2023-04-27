@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../utils/CustomButton';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const Login = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [formValue, setFormValue] = useState({ username: "user 1", password: "Abcd123@" });
+    const [formValue, setFormValue] = useState({ username: "peter123", password: "Abcd123@" });
     const [formError, setFormError] = useState({})
 
     const handleLogin = () => {
@@ -12,12 +16,11 @@ const Login = ({ navigation }) => {
         setFormError(validationErrors);
 
         if (Object.keys(validationErrors).length === 0) {
-            // const formData = new FormData();
-            // formData.append('email', formValue.email);
-            // formData.append('password', formValue.password);
-            // dispatch(userLogin({ formData: formData, Toast, navigation }))
-            // setFormData({ email: "", password: "" })
-            navigation.navigate("dashboard")
+            const formData = new FormData();
+            formData.append('username', formValue.username);
+            formData.append('password', formValue.password);
+
+            userLogin(formData);
         }
     }
 
@@ -43,14 +46,63 @@ const Login = ({ navigation }) => {
         return error;
     }
 
-    useEffect(() => {
+    const userLogin = async (formData) => {
+        const config = {
+            method: "post",
+            url: "http://192.168.1.14/amruta/public/api/login",
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            data: formData,
+        }
 
+        try {
+            const res = await axios(config);
+            // console.log(res.data);
+            if (res?.data?.Status === "true") {
+                AsyncStorage.setItem('@user', JSON.stringify(res?.data?.data[0]))
+                Toast.show({
+                    type: "success",
+                    text1: "Login Successful",
+                    text2: "Welcome " + res?.data?.data[0].name,
+                })
+                navigation.replace("dnav");
+                setFormValue({ email: "", password: "" });
+            } else {
+                Toast.show({
+                    type: "info",
+                    text1: "Login Failed",
+                    text2: "Pleaase Try Again",
+                })
+            }
+
+        } catch (exc) {
+            Toast.show({
+                type: "error",
+                text1: exc.message,
+                text2: "Something Went Wrong. Pleaase Try Again",
+            })
+        }
+    }
+
+    const checkUser = async ()=>{
+        const data = await AsyncStorage.getItem('@user')
+        const user = JSON.parse(data)
+        // console.log(data, user)
+        if(user){
+            navigation.replace("dnav")
+        }
+    }
+
+    useEffect(() => {
+        checkUser()
     }, [])
 
     return (
         <SafeAreaView styles={styles.parent}>
             <ScrollView style={{ backgroundColor: "#C7FFC6", height: "100%" }}>
                 <View style={{}}>
+
                     {/* // head logo */}
                     <View style={styles.headWrap}>
                         <Image style={styles.img} source={require("../../assets/images/logo.png")} />
@@ -132,7 +184,7 @@ const styles = StyleSheet.create({
     headWrap: {
         alignItems: "center",
         height: 200,
-        backgroundColor: "#fff",
+        justifyContent: "center"
     },
     img: {
         width: 330,

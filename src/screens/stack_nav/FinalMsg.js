@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 const FinalMsg = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
-            navigation.replace("dashboard")
+            navigation.replace("dnav")
         }, 1500)
     }, [])
 

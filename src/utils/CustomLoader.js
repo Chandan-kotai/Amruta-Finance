@@ -12,9 +12,10 @@ const CustomLoader = ({ loader }) => {
 
                     <ProgressLoader
                         visible={loader}
-                        isModal={true} isHUD={true}
+                        isModal={true}
+                        isHUD={true}
                         hudColor={"#ffffff"}
-                        color={"#2D75FF"}
+                        color={"#48B846"}
                     />
                 </View>
                 : null

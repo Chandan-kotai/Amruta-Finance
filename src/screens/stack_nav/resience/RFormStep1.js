@@ -4,6 +4,7 @@ import CustomButton from '../../../utils/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import CustomSwitch from '../../../utils/CustomSwitch';
 import { Dropdown } from 'react-native-element-dropdown';
+import Toast from 'react-native-toast-message'
 
 const negativeSubCat = [
     {
@@ -55,10 +56,10 @@ const reportStatCat = [
     }
 ]
 
-const RFormStep1 = ({ nextStep, setStep1 }) => {
+const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
     const [formValue, setFormValue] = useState({
-        applicant_id: "",
-        verification_type: "",
+        applicant_id: id,
+        verification_type: type,
         fi_reference_no: "",
         applicant_name: "",
         applicant_phone: "",
@@ -83,11 +84,15 @@ const RFormStep1 = ({ nextStep, setStep1 }) => {
     const handleFormData = () => {
         const validationErrors = validateForm();
         setFormError(validationErrors);
-        
+
         formValue.address_confirm = address ? "Yes" : "No"
 
-        if (Object.keys(validationErrors).length === 0) {
+        if (Object.keys(validationErrors).length !== 0) {
             setStep1(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Data Saved Successfully",
+            })
             nextStep()
         }
     }
@@ -160,6 +165,7 @@ const RFormStep1 = ({ nextStep, setStep1 }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
+                    editable={false}
                     autoCorrect={false}
                     placeholder={"Enter Applicant Id"}
                     value={formValue.applicant_id}
@@ -170,6 +176,7 @@ const RFormStep1 = ({ nextStep, setStep1 }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
+                    editable={false}
                     autoCorrect={false}
                     placeholder={"Verification Type"}
                     value={formValue.verification_type}

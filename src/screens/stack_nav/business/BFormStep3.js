@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import CustomButton from '../../../utils/CustomButton';
 import CustomSwitch from '../../../utils/CustomSwitch';
+import Toast from 'react-native-toast-message'
 
 
 const feedbackCat = [
@@ -99,6 +100,10 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
         if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep3(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Date Saved Successfully",
+            })
             nextStep()
         }
     }
@@ -128,8 +133,8 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
         if (!business_board_seen) {
             error.business_board_seen = "Please Fill Up this Field"
         }
-        if(business_board_seen === "Mismatch" || business_board_seen === "Temporary"){
-            if(!mismatch_temporary){
+        if (business_board_seen === "Mismatch" || business_board_seen === "Temporary") {
+            if (!mismatch_temporary) {
                 error.mismatch_temporary = "Please Fill Up this Field"
             }
         }
@@ -137,12 +142,12 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             error.type_of_locality = "Please Fill Up this Field"
         }
         if (!imgAllow) {
-            if(!if_no_reason){
+            if (!if_no_reason) {
                 error.if_no_reason = "Please Fill Up this Field"
             }
         }
         if (offSetup) {
-            if(!office_setup_details){
+            if (!office_setup_details) {
                 error.office_setup_details = "Please Fill Up this Field"
             }
         }
@@ -159,7 +164,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             error.feedback_1 = "Please Fill Up this Field"
         }
         if (feedback_1 === "Negative") {
-            if(!if_no_reason_1){
+            if (!if_no_reason_1) {
                 error.if_no_reason_1 = "Please Fill Up this Field"
             }
         }
@@ -173,7 +178,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
             error.feedback_2 = "Please Fill Up this Field"
         }
         if (feedback_2 === "Negative") {
-            if(!if_no_reason_2){
+            if (!if_no_reason_2) {
                 error.if_no_reason_2 = "Please Fill Up this Field"
             }
         }

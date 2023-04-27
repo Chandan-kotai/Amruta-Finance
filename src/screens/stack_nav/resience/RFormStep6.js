@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react'
 import CustomButton from '../../../utils/CustomButton';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
+import CustomLoader from '../../../utils/CustomLoader';
+import Toast from 'react-native-toast-message'
 
-const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
+const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username }) => {
   const [formValue, setFormValue] = useState({
     verifier_name: "",
     summary: "",
     lat_long: ""
   });
-
+  const [status, setStatus] = useState(false)
   const [formError, setFormError] = useState({})
 
   const handleFormData = () => {
@@ -79,37 +81,44 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
 
       // step 5
       formData.append('building_pic', {
-        type: step5?.building_pic[0].type,
+        type: step5?.building_pic[0]?.type,
         uri: step5?.building_pic[0]?.uri,
         name: step5?.building_pic[0]?.fileName
       });
 
       formData.append('name_plate_pic', {
-        type: step5?.name_plate_pic[0].type,
+        type: step5?.name_plate_pic[0]?.type,
         uri: step5?.name_plate_pic[0]?.uri,
         name: step5?.name_plate_pic[0]?.fileName
       });
 
-      formData.append('residence_setup_pic', {
-        type: step5?.residence_setup_pic[0].type,
-        uri: step5?.residence_setup_pic[0]?.uri,
-        name: step5?.residence_setup_pic[0]?.fileName
+      // formData.append('residence_setup_pic', {
+      //   type: step5?.residence_setup_pic[0].type,
+      //   uri: step5?.residence_setup_pic[0]?.uri,
+      //   name: step5?.residence_setup_pic[0]?.fileName
+      // });
+      step5?.residence_setup_pic?.forEach((image, index) => {
+        formData.append(`residence_setup_pic_${index}`, {
+          uri: image.uri,
+          type: image.type,
+          name: image.fileName
+        });
       });
 
       formData.append('landmark_pic', {
-        type: step5?.landmark_pic[0].type,
+        type: step5?.landmark_pic[0]?.type,
         uri: step5?.landmark_pic[0]?.uri,
         name: step5?.landmark_pic[0]?.fileName
       });
 
       formData.append('kyc_pic', {
-        type: step5?.kyc_pic[0].type,
+        type: step5?.kyc_pic[0]?.type,
         uri: step5?.kyc_pic[0]?.uri,
         name: step5?.kyc_pic[0]?.fileName
       });
 
       formData.append('customer_pic', {
-        type: step5?.customer_pic[0].type,
+        type: step5?.customer_pic[0]?.type,
         uri: step5?.customer_pic[0]?.uri,
         name: step5?.customer_pic[0]?.fileName
       });
@@ -118,6 +127,8 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
       formData.append('verifier_name', formValue.verifier_name);
       formData.append('summary', formValue.summary);
       formData.append('lat_long', formValue.lat_long);
+
+      formData.append('username', username)
 
       // console.log("form data =>", formData);
       sendFormData(formData)
@@ -159,15 +170,25 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
     console.log("form data func =>", formData);
 
     try {
+      setStatus(true)
       const res = await axios(config);
-      console.log("server response=>", res.data);
+      setStatus(false)
+      // console.log("server response=>", res.data);
       if (res?.data?.result === "success") {
-        // navigation.replace("fmsg")
+        navigation.replace("fmsg")
       } else {
-        Alert.alert("Something Went Wrong!!")
+        Toast.show({
+          type: "info",
+          text1: "Something Went Wrong. Pleaase Try Again",
+        })
       }
     } catch (exc) {
       console.log("error=>", exc);
+      Toast.show({
+        type: "error",
+        text1: exc.message,
+        text2: "Something Went Wrong. Pleaase Try Again",
+      })
     }
 
   }
@@ -191,10 +212,12 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
         },
       )
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        setStatus(true)
         Geolocation.getCurrentPosition(position => {
           let lat = JSON.stringify(position.coords.latitude);
           let long = JSON.stringify(position.coords.longitude);
-          console.log(lat + "," + long);
+          // console.log(lat + "," + long);
+          setStatus(false)
           setFormValue({ ...formValue, lat_long: lat + "," + long })
         }, (error) => {
           // sendIntent()
@@ -275,6 +298,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5 }) => {
           <CustomButton btnText={"Submit"} onPressFunc={handleFormData} />
         </View>
       </View>
+      <CustomLoader loader={status} />
     </ScrollView>
   )
 }

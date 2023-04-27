@@ -2,6 +2,8 @@ import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../../utils/CustomButton';
 import { Dropdown } from 'react-native-element-dropdown';
+import Toast from 'react-native-toast-message'
+
 
 const relationStatCat = [
     {
@@ -54,6 +56,10 @@ const BFormStep2 = ({ nextStep, setStep2 }) => {
         if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep2(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Date Saved Successfully",
+            })
             nextStep()
         }
     }

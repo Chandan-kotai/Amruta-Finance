@@ -4,6 +4,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import CustomButton from '../../../utils/CustomButton';
+import Toast from 'react-native-toast-message'
 
 const BFormStep5 = ({ nextStep, setStep5 }) => {
   const refRBSheet = useRef();
@@ -16,7 +17,6 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
     customer_pic: ""
   })
   const [option, setOption] = useState("");
-  const pics = [];
 
   // console.log("image from state=>", images.office_setup_pic);
   // console.log("image from var pics=>", pics);
@@ -34,8 +34,10 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
       setImages({ ...images, stock_pic: image })
     }
     if (option === "optn3") {
-      pics.push(image);
-      setImages({ ...images, office_setup_pic: pics })
+      setImages(prevState => ({
+        ...prevState,
+        office_setup_pic: [...prevState.office_setup_pic, image[0]]
+      }))
     }
     if (option === "optn4") {
       setImages({ ...images, landmark_pic: image })
@@ -107,6 +109,10 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
 
     if (Object.keys(validationErrors).length === 0) {
       setStep5(images)
+      Toast.show({
+        type: "success",
+        text1: "Date Saved Successfully",
+      })
       nextStep()
     }
   }
@@ -209,12 +215,12 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
 
         {/* Office Setup */}
         <View style={styles.itemContainer}>
-          <View style={{marginBottom: 3}}>
+          <View style={{ marginBottom: 3 }}>
             <Text style={{ fontSize: 16 }}>Office Setup</Text>
             <Text style={{ fontSize: 11 }}>(Minimum 2 photo from differnt angle)</Text>
           </View>
 
-          {!images?.office_setup_pic?.length < 2 ?
+          {images?.office_setup_pic?.length < 2 ?
             <TouchableOpacity onPress={() => openRBSheet("optn3")}>
               <View style={styles.imgWrap}>
                 <Image style={{ width: 15, height: 15 }} source={require("../../../assets/icons/camera.png")} />

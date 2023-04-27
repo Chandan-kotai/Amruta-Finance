@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, ScrollView, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomSwitch from '../../../utils/CustomSwitch';
 import CustomButton from '../../../utils/CustomButton';
+import Toast from 'react-native-toast-message'
 
 const BFormStep4 = ({ nextStep, setStep4 }) => {
     const [labour, setLabour] = useState(false);
@@ -43,6 +44,10 @@ const BFormStep4 = ({ nextStep, setStep4 }) => {
         if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep4(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Date Saved Successfully",
+            })
             nextStep()
         }
     }

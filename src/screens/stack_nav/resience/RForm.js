@@ -6,8 +6,9 @@ import RFormStep3 from './RFormStep3';
 import RFormStep4 from './RFormStep4';
 import RFormStep5 from './RFormStep5';
 import RFormStep6 from './RFormStep6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const RForm = ({ navigation }) => {
+const RForm = ({ navigation, route }) => {
     const [step, setStep] = useState(1);
     const [component, setComponent] = useState();
     const [step1, setStep1] = useState();
@@ -15,6 +16,8 @@ const RForm = ({ navigation }) => {
     const [step3, setStep3] = useState();
     const [step4, setStep4] = useState();
     const [step5, setStep5] = useState();
+    const [user, setUser] = useState();
+    const { id, type } = route?.params;
 
     // console.log("step 1=>", step1);
     // console.log("step 2=>", step2);
@@ -35,8 +38,14 @@ const RForm = ({ navigation }) => {
     }
 
     useEffect(() => {
+        const checkUser = async ()=>{
+            const data = await AsyncStorage.getItem('@user')
+            setUser(JSON.parse(data))
+        }
+        checkUser();
+
         if (step === 1) {
-            setComponent(<RFormStep1 nextStep={nextStep} setStep1={setStep1} />)
+            setComponent(<RFormStep1 nextStep={nextStep} setStep1={setStep1} id={id} type={type} />)
         }
         else if (step === 2) {
             setComponent(<RFormStep2 nextStep={nextStep} setStep2={setStep2}/>)
@@ -51,7 +60,7 @@ const RForm = ({ navigation }) => {
             setComponent(<RFormStep5 nextStep={nextStep} setStep5={setStep5}/>)
         }
         else if (step === 6) {
-            setComponent(<RFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} />)
+            setComponent(<RFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} username={user.username} />)
         }
     }, [step]);
 

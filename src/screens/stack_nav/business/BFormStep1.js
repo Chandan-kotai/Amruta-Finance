@@ -4,6 +4,7 @@ import CustomButton from '../../../utils/CustomButton';
 import DatePicker from 'react-native-date-picker';
 import CustomSwitch from '../../../utils/CustomSwitch';
 import { Dropdown } from 'react-native-element-dropdown';
+import Toast from 'react-native-toast-message'
 
 const negativeSubCat = [
     {
@@ -88,6 +89,10 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
 
         if (Object.keys(validationErrors).length === 0) {
             setStep1(formValue)
+            Toast.show({
+                type: "success",
+                text1: "Date Saved Successfully",
+            })
             nextStep()
         }
     }

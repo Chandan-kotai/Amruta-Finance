@@ -6,6 +6,7 @@ import Dashboard from './Dashboard';
 import BForm from './business/BForm';
 import RForm from './resience/RForm';
 import FinalMsg from './FinalMsg';
+import DrawerNavigation from '../drawer_nav/DrawerNavigation';
 
 const RootStack = createNativeStackNavigator()
 
@@ -14,7 +15,7 @@ const StackNavigation = () => {
     <NavigationContainer>
         <RootStack.Navigator initialRouteName='login'>
             <RootStack.Screen options={{ headerShown: false }} name="login" component={Login}/>
-            <RootStack.Screen options={{ headerShown: false }} name="dashboard" component={Dashboard}/>
+            <RootStack.Screen options={{ headerShown: false }} name="dnav" component={DrawerNavigation}/>
             <RootStack.Screen options={{ headerShown: false }} name="bform" component={BForm}/>
             <RootStack.Screen options={{ headerShown: false }} name="rform" component={RForm}/>
             <RootStack.Screen options={{ headerShown: false }} name="fmsg" component={FinalMsg}/>

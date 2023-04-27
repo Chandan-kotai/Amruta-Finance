@@ -6,6 +6,7 @@ import BFormStep3 from './BFormStep3';
 import BFormStep4 from './BFormStep4';
 import BFormStep5 from './BFormStep5';
 import BFormStep6 from './BFormStep6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BForm = ({ navigation, route }) => {
     const [step, setStep] = useState(1);
@@ -15,7 +16,9 @@ const BForm = ({ navigation, route }) => {
     const [step3, setStep3] = useState();
     const [step4, setStep4] = useState();
     const [step5, setStep5] = useState();
+    const [user, setUser] = useState();
     const { id, type } = route?.params;
+
 
     // console.log("step 1=>", step1);
     // console.log("step 2=>", step2);
@@ -36,6 +39,12 @@ const BForm = ({ navigation, route }) => {
     }
 
     useEffect(() => {
+        const checkUser = async ()=>{
+            const data = await AsyncStorage.getItem('@user')
+            setUser(JSON.parse(data))
+        }
+        checkUser();
+
         if (step === 1) {
             setComponent(<BFormStep1 nextStep={nextStep} setStep1={setStep1} id={id} type={type} />)
         }
@@ -52,7 +61,7 @@ const BForm = ({ navigation, route }) => {
             setComponent(<BFormStep5 nextStep={nextStep} setStep5={setStep5} />)
         }
         else if (step === 6) {
-            setComponent(<BFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} />)
+            setComponent(<BFormStep6 navigation={navigation} step1={step1} step2={step2} step3={step3} step4={step4} step5={step5} username={user.username} />)
         }
     }, [step]);
 

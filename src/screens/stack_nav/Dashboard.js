@@ -1,10 +1,60 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-native-date-picker'
+import axios from 'axios';
+import CustomLoader from '../../utils/CustomLoader';
+import Toast from 'react-native-toast-message';
 
 const Dashboard = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
+    const [status, setStatus] = useState(false);
+    const [taskList, setTaskList] = useState([])
+
+    const totalSubmited = taskList?.filter(item => item?.status === "true")
+
+    const fetchTaskList = async () => {
+        const config = {
+            method: "get",
+            url: "http://192.168.1.14/amruta/public/api/get-all",
+        }
+
+        try {
+            setStatus(true)
+            const res = await axios(config);
+            setStatus(false)
+            // console.log("response=>", res?.data);
+            if (res?.data) {
+                setTaskList(res?.data)
+            } else {
+                Toast.show({
+                    type: "info",
+                    text1: "No Records Found",
+                    text2: "Pleaase Try Again"
+                })
+            }
+        } catch (exc) {
+            // console.log("Error=>", exc);
+            Toast.show({
+                type: "error",
+                text1: exc.message,
+                text2: "Something Went Wrong. Pleaase Try Again",
+            })
+        }
+    }
+
+    const navigateForm = (item) => {
+        if (item?.verification_type === "Business") {
+            navigation.navigate("bform", { id: item?.applicant_id, type: item?.verification_type })
+        }
+        if (item?.verification_type === "Residence") {
+            navigation.navigate("rform", { id: item?.applicant_id, type: item?.verification_type })
+        }
+    }
+
+    useEffect(() => {
+        fetchTaskList();
+    }, [])
 
     return (
         <SafeAreaView style={styles.parent}>
@@ -38,7 +88,7 @@ const Dashboard = ({ navigation }) => {
                     />
 
                     {/* // menu */}
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.openDrawer()}>
                         <Image style={{ width: 20, height: 20 }} source={require("../../assets/icons/menu.png")} />
                     </TouchableOpacity>
                 </View>
@@ -47,13 +97,13 @@ const Dashboard = ({ navigation }) => {
                 <View style={styles.displayWrap}>
                     {/* // Asssigned */}
                     <View style={[styles.display, { marginLeft: 12 }]}>
-                        <Text style={styles.displayText}>120</Text>
+                        <Text style={styles.displayText}>{taskList?.length}</Text>
                         <Text style={{ color: "#000" }}>Total Assigned</Text>
                     </View>
 
                     {/* // Submission */}
                     <View style={[styles.display, { marginRight: 12 }]}>
-                        <Text style={styles.displayText}>20</Text>
+                        <Text style={styles.displayText}>{totalSubmited?.length}</Text>
                         <Text style={{ color: "#000" }}>Total Submitted</Text>
                     </View>
                 </View>
@@ -67,38 +117,37 @@ const Dashboard = ({ navigation }) => {
                     </View>
 
                     {/* // content */}
-                    <TouchableOpacity>
-                        <View style={styles.content}>
-                            <Text style={{ color: "#000" }}>122365</Text>
-                            <Text style={{ color: "#48B846" }}>Submited</Text>
+                    {taskList?.length ?
+                        <FlatList
+                            data={taskList}
+                            keyExtractor={(item, index) => index}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={() => navigateForm(item)}
+                                    disabled={item?.status === "true" ? true : false}
+                                >
+                                    <View style={styles.content}>
+                                        <Text style={{ color: "#000" }}>{item?.applicant_id}</Text>
+                                        <Text
+                                            style={
+                                                item?.status === "true" ? { color: "#48B846" } : { color: "#EB3A79" }
+                                            }
+                                        >
+                                            {item?.status === "true" ? "Submited" : "Pending"}
+                                        </Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        />
+                        :
+                        <View style={styles.nrFound}>
+                            <Text style={{ color: "#000", textAlign: "center" }}>No Records Found</Text>
                         </View>
-                    </TouchableOpacity>
-
-                    {/* // content */}
-                    <TouchableOpacity onPress={() => navigation.navigate("bform", { id: "122365", type: "Office" })}>
-                        <View style={styles.content}>
-                            <Text style={{ color: "#000" }}>122365</Text>
-                            <Text style={{ color: "#EB3A79" }}>Pending</Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    {/* // content */}
-                    <TouchableOpacity onPress={() => navigation.navigate("rform", { id: "122363", type: "Residencial" })}>
-                        <View style={styles.content}>
-                            <Text style={{ color: "#000" }}>122363</Text>
-                            <Text style={{ color: "#EB3A79" }}>Pending</Text>
-                        </View>
-                    </TouchableOpacity>
-                    {/* // content */}
-                    <TouchableOpacity>
-                        <View style={styles.content}>
-                            <Text style={{ color: "#000" }}>122365</Text>
-                            <Text style={{ color: "#48B846" }}>Submited</Text>
-                        </View>
-                    </TouchableOpacity>
+                    }
                 </View>
             </View>
-        </SafeAreaView>
+            <CustomLoader loader={status} />
+        </SafeAreaView >
     )
 }
 
@@ -140,7 +189,7 @@ const styles = StyleSheet.create({
     display: {
         backgroundColor: "#fff",
         borderRadius: 10,
-        width: 130,
+        width: 143,
         height: 80,
         alignItems: "center",
         justifyContent: "center",
@@ -172,5 +221,13 @@ const styles = StyleSheet.create({
         backgroundColor: "#F2F2F2",
         paddingHorizontal: 10,
         paddingVertical: 5,
+    },
+    nrFound: {
+        alignItems: "center",
+        marginHorizontal: 15,
+        marginBottom: 15,
+        backgroundColor: "#F2F2F2",
+        paddingHorizontal: 10,
+        paddingVertical: 10,
     }
 })
