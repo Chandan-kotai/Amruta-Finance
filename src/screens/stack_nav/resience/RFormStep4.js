@@ -41,7 +41,7 @@ const RFormStep4 = ({ nextStep, setStep4 }) => {
         formValue.is_pornography = pornography ? "Yes" : "No";
         formValue.is_arms = arms ? "Yes" : "No";
 
-        if (Object.keys(validationErrors).length !== 0) {
+        if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep4(formValue)
             Toast.show({

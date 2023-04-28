@@ -52,7 +52,7 @@ const RFormStep2 = ({ nextStep, setStep2 }) => {
         setFormError(validationErrors);
         // console.log("outside if", address);
 
-        if (Object.keys(validationErrors).length !== 0) {
+        if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep2(formValue)
             Toast.show({

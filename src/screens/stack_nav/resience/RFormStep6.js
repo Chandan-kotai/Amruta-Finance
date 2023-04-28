@@ -167,7 +167,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       data: formData,
     }
 
-    console.log("form data func =>", formData);
+    // console.log("form data func =>", formData);
 
     try {
       setStatus(true)

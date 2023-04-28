@@ -146,7 +146,7 @@ const RFormStep3 = ({ nextStep, setStep3 }) => {
         formValue.inside_img_allow = imgAllow ? "Yes" : "No";
         formValue.is_applicant_stay = stay ? "Yes" : "No";
 
-        if (Object.keys(validationErrors).length !== 0) {
+        if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep3(formValue)
             Toast.show({

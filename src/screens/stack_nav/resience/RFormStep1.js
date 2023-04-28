@@ -87,7 +87,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
 
         formValue.address_confirm = address ? "Yes" : "No"
 
-        if (Object.keys(validationErrors).length !== 0) {
+        if (Object.keys(validationErrors).length === 0) {
             setStep1(formValue)
             Toast.show({
                 type: "success",

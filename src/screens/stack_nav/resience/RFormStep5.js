@@ -107,7 +107,7 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
     const validationErrors = validateForm();
     setFormError(validationErrors);
 
-    if (Object.keys(validationErrors).length !== 0) {
+    if (Object.keys(validationErrors).length === 0) {
       setStep5(images)
       Toast.show({
         type: "success",

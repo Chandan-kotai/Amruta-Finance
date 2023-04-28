@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Toast from 'react-native-toast-message';
 import CustomButton from '../../utils/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LogOut = ({ navigation }) => {
+    const [user, setUser] = useState();
 
     const userLogout = () => {
         AsyncStorage.removeItem('@user');
@@ -15,6 +16,14 @@ const LogOut = ({ navigation }) => {
         navigation.replace("login");
     }
 
+    useEffect(()=>{
+        const checkUser = async ()=>{
+            const data = await AsyncStorage.getItem('@user')
+            setUser(JSON.parse(data))
+        }
+        checkUser();
+    }, [])
+
     return (
         <SafeAreaView>
             <View>
@@ -22,7 +31,7 @@ const LogOut = ({ navigation }) => {
                     {/* // head */}
                     <View style={styles.headWrap}>
                         <Image style={styles.profile} source={require("../../assets/images/prfile.png")} />
-                        <Text style={styles.headText}>{"User 1"}</Text>
+                        <Text style={styles.headText}>{user?.name}</Text>
                     </View>
 
 

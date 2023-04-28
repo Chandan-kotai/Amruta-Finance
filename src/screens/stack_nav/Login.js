@@ -70,8 +70,8 @@ const Login = ({ navigation }) => {
                 setFormValue({ email: "", password: "" });
             } else {
                 Toast.show({
-                    type: "info",
-                    text1: "Login Failed",
+                    type: "error",
+                    text1: "Invalid Username or Password",
                     text2: "Pleaase Try Again",
                 })
             }
