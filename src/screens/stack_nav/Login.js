@@ -1,9 +1,11 @@
+
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../utils/CustomButton';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Api } from '../../services/api';
 
 
 const Login = ({ navigation }) => {
@@ -49,7 +51,7 @@ const Login = ({ navigation }) => {
     const userLogin = async (formData) => {
         const config = {
             method: "post",
-            url: "http://192.168.1.14/amruta/public/api/login",
+            url: Api+"/login",
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

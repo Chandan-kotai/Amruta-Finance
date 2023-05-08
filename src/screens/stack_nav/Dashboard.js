@@ -4,6 +4,7 @@ import DatePicker from 'react-native-date-picker'
 import axios from 'axios';
 import CustomLoader from '../../utils/CustomLoader';
 import Toast from 'react-native-toast-message';
+import { Api } from '../../services/api';
 
 const Dashboard = ({ navigation }) => {
     const [date, setDate] = useState(new Date());
@@ -16,7 +17,7 @@ const Dashboard = ({ navigation }) => {
     const fetchTaskList = async () => {
         const config = {
             method: "get",
-            url: "http://192.168.1.14/amruta/public/api/get-all",
+            url: Api+"/get-all",
         }
 
         try {

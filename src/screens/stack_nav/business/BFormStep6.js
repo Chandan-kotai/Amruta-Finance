@@ -5,6 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../utils/CustomLoader';
+import { Api } from '../../../services/api';
 
 const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username }) => {
   const [formValue, setFormValue] = useState({
@@ -167,7 +168,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
   const sendFormData = async (formData) => {
     var config = {
       method: "post",
-      url: "http://192.168.1.14/amruta/public/api/add-applicant",
+      url: Api+"/add-applicant",
       headers: {
         'Content-Type': 'multipart/form-data',
       },
