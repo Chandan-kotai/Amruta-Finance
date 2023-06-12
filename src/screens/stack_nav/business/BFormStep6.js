@@ -93,11 +93,6 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         name: step5?.stock_pic[0]?.fileName
       });
 
-      // formData.append('office_setup_pic',{
-      //   type: step5?.office_setup_pic[0].type,
-      //   uri: step5?.office_setup_pic[0]?.uri,
-      //   name: step5?.office_setup_pic[0]?.fileName
-      // });
       step5?.office_setup_pic?.forEach((image, index) => {
         formData.append(`office_setup_pic_${index}`, {
           uri: image.uri,
@@ -129,7 +124,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('summary', formValue.summary);
       formData.append('lat_long', formValue.lat_long);
 
-      formData.append('username', username)
+      // formData.append('username', username)
 
       // console.log("form data =>", formData);
       sendFormData(formData)
@@ -181,7 +176,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       setStatus(true)
       const res = await axios(config);
       setStatus(false)
-      // console.log("server response=>", res.data);
+      console.log("server response=>", res.data);
       if (res?.data?.result === "success") {
         navigation.replace("fmsg")
       } else {
@@ -298,7 +293,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
           <CustomButton btnText={"Submit"} onPressFunc={handleFormData} />
         </View>
       </View>
-      <CustomLoader loader={status}/>
+      <CustomLoader loader={status} />
     </ScrollView>
   )
 }

@@ -68,7 +68,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
         visit_date_time: "",
         fos_name: "",
         report_status: "",
-        photo_count: "",
+        photo_count: "7",
         negative_sub_status: "",
         address_confirm: "",
         landmark: ""
@@ -359,9 +359,10 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    editable={false}
                     placeholder={"Enter Photo Count"}
                     value={formValue.photo_count}
-                    onChangeText={value => setFormValue({ ...formValue, photo_count: value })}
+                    // onChangeText={value => setFormValue({ ...formValue, photo_count: value })}
                 />
                 {formError?.photo_count ?
                     <Text style={styles.error}>{formError.photo_count}</Text>

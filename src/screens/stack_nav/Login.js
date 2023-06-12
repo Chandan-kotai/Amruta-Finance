@@ -10,7 +10,7 @@ import { Api } from '../../services/api';
 
 const Login = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const [formValue, setFormValue] = useState({ username: "peter123", password: "Abcd123@" });
+    const [formValue, setFormValue] = useState({ username: "", password: "" });
     const [formError, setFormError] = useState({})
 
     const handleLogin = () => {

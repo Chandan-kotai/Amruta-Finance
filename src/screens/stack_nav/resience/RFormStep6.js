@@ -174,12 +174,12 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       setStatus(true)
       const res = await axios(config);
       setStatus(false)
-      // console.log("server response=>", res.data);
+      console.log("server response=>", res.data);
       if (res?.data?.result === "success") {
         navigation.replace("fmsg")
       } else {
         Toast.show({
-          type: "info",
+          type: "error",
           text1: "Something Went Wrong. Pleaase Try Again",
         })
       }
