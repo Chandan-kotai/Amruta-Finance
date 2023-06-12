@@ -87,11 +87,15 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         name: step5?.sign_board_pic[0]?.fileName
       });
 
+      formData.append('sign_board_pic_loc', step5?.sign_board_pic_loc);
+
       formData.append('stock_pic', {
         type: step5?.stock_pic[0].type,
         uri: step5?.stock_pic[0]?.uri,
         name: step5?.stock_pic[0]?.fileName
       });
+
+      formData.append('stock_pic_loc', step5?.stock_pic_loc);
 
       step5?.office_setup_pic?.forEach((image, index) => {
         formData.append(`office_setup_pic_${index}`, {
@@ -101,11 +105,15 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         });
       });
 
+      formData.append('office_setup_pic_loc', step5?.office_setup_pic_loc);
+
       formData.append('landmark_pic', {
         type: step5?.landmark_pic[0].type,
         uri: step5?.landmark_pic[0]?.uri,
         name: step5?.landmark_pic[0]?.fileName
       });
+
+      formData.append('landmark_pic_loc', step5?.landmark_pic_loc);
 
       formData.append('kyc_pic', {
         type: step5?.kyc_pic[0].type,
@@ -113,16 +121,20 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         name: step5?.kyc_pic[0]?.fileName
       });
 
+      formData.append('kyc_pic_loc', step5?.kyc_pic_loc);
+
       formData.append('customer_pic', {
         type: step5?.customer_pic[0].type,
         uri: step5?.customer_pic[0]?.uri,
         name: step5?.customer_pic[0]?.fileName
       });
 
+      formData.append('customer_pic_loc', step5?.customer_pic_loc);
+
       // step 6
       formData.append('verifier_name', formValue.verifier_name);
       formData.append('summary', formValue.summary);
-      formData.append('lat_long', formValue.lat_long);
+      // formData.append('lat_long', formValue.lat_long);
 
       // formData.append('username', username)
 
@@ -153,12 +165,6 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
     return error;
   }
 
-  // const sendIntent = async () => {
-  //   await Linking.sendIntent({
-  //     action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-  //   });
-
-  // }
 
   const sendFormData = async (formData) => {
     var config = {
@@ -216,8 +222,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
           setStatus(false)
           setFormValue({ ...formValue, lat_long: lat + "," + long })
         }, (error) => {
-          // sendIntent()
-          Alert.alert("Turn on GPS")
+          Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
         }
         )
 

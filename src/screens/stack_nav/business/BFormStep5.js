@@ -5,21 +5,39 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import CustomButton from '../../../utils/CustomButton';
 import Toast from 'react-native-toast-message'
+import Geolocation from '@react-native-community/geolocation';
 
 const BFormStep5 = ({ nextStep, setStep5 }) => {
   const refRBSheet = useRef();
   const [images, setImages] = useState({
     sign_board_pic: "",
+    sign_board_pic_loc: "",
     stock_pic: "",
+    stock_pic_loc: "",
     office_setup_pic: [],
+    office_setup_pic_loc: "",
     landmark_pic: "",
+    landmark_pic_loc: "",
     kyc_pic: "",
-    customer_pic: ""
+    kyc_pic_loc: "",
+    customer_pic: "",
+    customer_pic_loc: ""
   })
   const [option, setOption] = useState("");
 
   // console.log("image from state=>", images.office_setup_pic);
   // console.log("image from var pics=>", pics);
+
+  const getCurrentPosition = ()=>{
+    Geolocation.getCurrentPosition(position => {
+      let lat = JSON.stringify(position.coords.latitude);
+      let long = JSON.stringify(position.coords.longitude);
+      return {latitude: lat, longitude: long};
+    }, (error) => {
+      Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+    }
+    )
+  }
 
   const openRBSheet = (value) => {
     refRBSheet.current.open();
@@ -28,25 +46,32 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
 
   const setFile = (image) => {
     if (option === "optn1") {
-      setImages({ ...images, sign_board_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, sign_board_pic: image, sign_board_pic_loc: locData })
     }
     if (option === "optn2") {
-      setImages({ ...images, stock_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, stock_pic: image, stock_pic_loc: locData })
     }
     if (option === "optn3") {
+      const locData = getCurrentPosition();
       setImages(prevState => ({
         ...prevState,
-        office_setup_pic: [...prevState.office_setup_pic, image[0]]
+        office_setup_pic: [...prevState.office_setup_pic, image[0]],
+        office_setup_pic_loc: locData
       }))
     }
     if (option === "optn4") {
-      setImages({ ...images, landmark_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, landmark_pic: image, landmark_pic_loc: locData })
     }
     if (option === "optn5") {
-      setImages({ ...images, kyc_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, kyc_pic: image, kyc_pic_loc: locData })
     }
     if (option === "optn6") {
-      setImages({ ...images, customer_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, customer_pic: image, customer_pic_loc: locData })
     }
   }
 

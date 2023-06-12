@@ -5,21 +5,39 @@ import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import CustomButton from '../../../utils/CustomButton';
 import Toast from 'react-native-toast-message'
+import Geolocation from '@react-native-community/geolocation';
 
 const RFormStep5 = ({ nextStep, setStep5 }) => {
   const refRBSheet = useRef();
   const [images, setImages] = useState({
     building_pic: "",
+    building_pic_loc: "",
     name_plate_pic: "",
+    name_plate_pic_loc: "",
     residence_setup_pic: [],
+    residence_setup_pic_loc: "",
     landmark_pic: "",
+    landmark_pic_loc: "",
     kyc_pic: "",
-    customer_pic: ""
+    kyc_pic_loc: "",
+    customer_pic: "",
+    customer_pic_loc: "",
   })
   const [option, setOption] = useState("");
 
   // console.log("image from state=>", images);
   // console.log("image from var pics=>", pics);
+
+  const getCurrentPosition = () => {
+    Geolocation.getCurrentPosition(position => {
+      let lat = JSON.stringify(position.coords.latitude);
+      let long = JSON.stringify(position.coords.longitude);
+      return { latitude: lat, longitude: long };
+    }, (error) => {
+      Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+    }
+    )
+  }
 
   const openRBSheet = (value) => {
     refRBSheet.current.open();
@@ -28,25 +46,32 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
 
   const setFile = (image) => {
     if (option === "optn1") {
-      setImages({ ...images, building_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, building_pic: image, building_pic_loc: locData })
     }
     if (option === "optn2") {
-      setImages({ ...images, name_plate_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, name_plate_pic: image, name_plate_pic_loc: locData })
     }
     if (option === "optn3") {
+      const locData = getCurrentPosition();
       setImages(prevState => ({
         ...prevState,
-        residence_setup_pic: [...prevState.residence_setup_pic, image[0]]
+        residence_setup_pic: [...prevState.residence_setup_pic, image[0]],
+        residence_setup_pic_loc: locData
       }))
     }
     if (option === "optn4") {
-      setImages({ ...images, landmark_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, landmark_pic: image, landmark_pic_loc: locData })
     }
     if (option === "optn5") {
-      setImages({ ...images, kyc_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, kyc_pic: image, kyc_pic_loc: locData })
     }
     if (option === "optn6") {
-      setImages({ ...images, customer_pic: image })
+      const locData = getCurrentPosition();
+      setImages({ ...images, customer_pic: image, customer_pic_loc: locData })
     }
   }
 
