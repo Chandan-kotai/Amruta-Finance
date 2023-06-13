@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList, PermissionsAndroid, Alert } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList, PermissionsAndroid, Alert, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-native-date-picker'
 import axios from 'axios';
@@ -67,7 +67,14 @@ const Dashboard = ({ navigation }) => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 console.log("granted");
             } else {
-                Alert.alert("Permission Denied!!!")
+                Alert.alert("Amruta Finance", "This application needs to access the device location to function properly.", [
+                    { text: 'OK', onPress: () => Linking.openSettings() }
+                ])
+            }
+
+            const hasPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+            if(!hasPermission){
+                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
             }
         } catch (err) {
             console.log(err);

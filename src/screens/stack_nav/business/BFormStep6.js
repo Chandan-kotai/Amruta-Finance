@@ -11,7 +11,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
   const [formValue, setFormValue] = useState({
     verifier_name: "",
     summary: "",
-    lat_long: ""
+    // lat_long: ""
   });
   const [status, setStatus] = useState(false)
   const [formError, setFormError] = useState({})
@@ -140,6 +140,8 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
 
       // console.log("form data =>", formData);
       sendFormData(formData)
+    }else{
+      console.log("from else");
     }
   }
 
@@ -158,9 +160,9 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
     if (!summary) {
       error.summary = "This Field is Required"
     }
-    if (!lat_long) {
-      error.lat_long = "This Field is Required"
-    }
+    // if (!lat_long) {
+    //   error.lat_long = "This Field is Required"
+    // }
 
     return error;
   }
@@ -176,7 +178,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       data: formData,
     }
 
-    // console.log("form data func =>", formData);
+    console.log("form data func =>", formData);
 
     try {
       setStatus(true)
@@ -202,41 +204,9 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
 
   }
 
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Amruta Finance",
-          message: 'Amruta Finance needs to access your Location',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        setStatus(true)
-        Geolocation.getCurrentPosition(position => {
-          let lat = JSON.stringify(position.coords.latitude);
-          let long = JSON.stringify(position.coords.longitude);
-          // console.log(lat + "," + long);
-          setStatus(false)
-          setFormValue({ ...formValue, lat_long: lat + "," + long })
-        }, (error) => {
-          Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-        }
-        )
+  // useEffect(() => {
 
-      } else {
-        Alert.alert("Permission Denied!!!")
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  useEffect(() => {
-
-  }, [])
+  // }, [])
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={{ marginBottom: 200, marginTop: 20 }}>
@@ -272,7 +242,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         }
 
         {/* // Latitude & Longitude */}
-        <Text style={[styles.labels, { marginTop: 15, }]}>Latitude & Longitude</Text>
+        {/* <Text style={[styles.labels, { marginTop: 15, }]}>Latitude & Longitude</Text>
         <View style={{ position: "relative" }}>
           <TextInput
             style={styles.inputBox}
@@ -291,7 +261,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         {formError?.lat_long ?
           <Text style={styles.error}>{formError.lat_long}</Text>
           : null
-        }
+        } */}
 
         {/* // button */}
         <View style={{ marginTop: 30, marginBottom: 15 }}>

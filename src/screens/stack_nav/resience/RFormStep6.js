@@ -11,7 +11,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
   const [formValue, setFormValue] = useState({
     verifier_name: "",
     summary: "",
-    lat_long: ""
+    // lat_long: ""
   });
   const [status, setStatus] = useState(false)
   const [formError, setFormError] = useState({})
@@ -29,7 +29,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('fi_reference_no', step1.fi_reference_no);
       formData.append('applicant_name', step1.applicant_name);
       formData.append('applicant_phone', step1.applicant_phone);
-      formData.append('business_address', step1.business_address);
+      formData.append('residence_address', step1.residence_address);
       formData.append('allocation_date_time', step1.allocation_date_time);
       formData.append('visit_date_time', step1.visit_date_time);
       formData.append('fos_name', step1.fos_name);
@@ -163,9 +163,9 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
     if (!summary) {
       error.summary = "This Field is Required"
     }
-    if (!lat_long) {
-      error.lat_long = "This Field is Required"
-    }
+    // if (!lat_long) {
+    //   error.lat_long = "This Field is Required"
+    // }
 
     return error;
   }
@@ -173,7 +173,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
   const sendFormData = async (formData) => {
     var config = {
       method: "post",
-      url: Api+"/add-applicant",
+      url: Api+"/add-applicant2",
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -277,7 +277,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         }
 
         {/* // Latitude & Longitude */}
-        <Text style={[styles.labels, { marginTop: 15, }]}>Latitude & Longitude</Text>
+        {/* <Text style={[styles.labels, { marginTop: 15, }]}>Latitude & Longitude</Text>
         <View style={{ position: "relative" }}>
           <TextInput
             style={styles.inputBox}
@@ -296,7 +296,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         {formError?.lat_long ?
           <Text style={styles.error}>{formError.lat_long}</Text>
           : null
-        }
+        } */}
 
         {/* // button */}
         <View style={{ marginTop: 30, marginBottom: 15 }}>

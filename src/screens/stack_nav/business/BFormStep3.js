@@ -97,7 +97,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
         formValue.office_setup_seen = offSetup ? "Yes" : "No";
         formValue.stock_seen = stock ? "Yes" : "No";
 
-        if (Object.keys(validationErrors).length !== 0) {
+        if (Object.keys(validationErrors).length === 0) {
             // console.log("inside if");
             setStep3(formValue)
             Toast.show({

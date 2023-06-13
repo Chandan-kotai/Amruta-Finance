@@ -63,7 +63,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
         fi_reference_no: "",
         applicant_name: "",
         applicant_phone: "",
-        business_address: "",
+        residence_address: "",
         allocation_date_time: "",
         visit_date_time: "",
         fos_name: "",
@@ -103,7 +103,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
             fi_reference_no,
             applicant_name,
             applicant_phone,
-            business_address,
+            residence_address,
             allocation_date_time,
             visit_date_time,
             fos_name,
@@ -124,8 +124,8 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
         if (!applicant_phone) {
             error.applicant_phone = "Please Fill Up this Field"
         }
-        if (!business_address) {
-            error.business_address = "Please Fill Up this Field"
+        if (!residence_address) {
+            error.residence_address = "Please Fill Up this Field"
         }
         if (!allocation_date_time) {
             error.allocation_date_time = "Please Fill Up this Field"
@@ -232,18 +232,18 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     : null
                 }
 
-                {/* // Business Address */}
-                <Text style={[styles.labels, { marginTop: 15, }]}>Business Address</Text>
+                {/* // Residence Address */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>Residence Address</Text>
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    placeholder={"Enter Business Address"}
-                    value={formValue.business_address}
-                    onChangeText={value => setFormValue({ ...formValue, business_address: value })}
+                    placeholder={"Enter Residence Address"}
+                    value={formValue.residence_address}
+                    onChangeText={value => setFormValue({ ...formValue, residence_address: value })}
                 />
-                {formError?.business_address ?
-                    <Text style={styles.error}>{formError.business_address}</Text>
+                {formError?.residence_address ?
+                    <Text style={styles.error}>{formError.residence_address}</Text>
                     : null
                 }
 

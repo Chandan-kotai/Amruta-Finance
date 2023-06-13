@@ -94,9 +94,9 @@ const RFormStep4 = ({ nextStep, setStep4 }) => {
                 error.is_arms_reason = "Please Fill Up this Field"
             }
         }
-        if (!others_reason) {
-            error.others_reason = "Please Fill Up this Field"
-        }
+        // if (!others_reason) {
+        //     error.others_reason = "Please Fill Up this Field"
+        // }
 
         return error;
     }
