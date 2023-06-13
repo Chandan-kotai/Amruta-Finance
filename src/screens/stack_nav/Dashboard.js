@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList, PermissionsAndroid, Alert } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-native-date-picker'
 import axios from 'axios';
@@ -17,7 +17,7 @@ const Dashboard = ({ navigation }) => {
     const fetchTaskList = async () => {
         const config = {
             method: "get",
-            url: Api+"/get-all",
+            url: Api + "/get-all",
         }
 
         try {
@@ -53,7 +53,29 @@ const Dashboard = ({ navigation }) => {
         }
     }
 
+    const requestLocationPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                // {
+                //     title: "Amruta Finance",
+                //     message: 'Amruta Finance needs to access your Location',
+                //     buttonNegative: 'Cancel',
+                //     buttonPositive: 'OK',
+                // },
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log("granted");
+            } else {
+                Alert.alert("Permission Denied!!!")
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
+        requestLocationPermission();
         fetchTaskList();
     }, [])
 

@@ -141,7 +141,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('summary', formValue.summary);
       // formData.append('lat_long', formValue.lat_long);
 
-      formData.append('username', username)
+      // formData.append('username', username);
 
       // console.log("form data =>", formData);
       sendFormData(formData)

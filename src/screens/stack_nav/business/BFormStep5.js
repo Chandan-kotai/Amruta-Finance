@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, PermissionsAndroid, Alert, Platform } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, PermissionsAndroid, Alert, Platform, Linking } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import RBSheet from "react-native-raw-bottom-sheet";
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
@@ -28,15 +28,27 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
   // console.log("image from state=>", images.office_setup_pic);
   // console.log("image from var pics=>", pics);
 
-  const getCurrentPosition = ()=>{
+  const getCurrentPosition = () => {
+    var lat;
+    var long;
     Geolocation.getCurrentPosition(position => {
-      let lat = JSON.stringify(position.coords.latitude);
-      let long = JSON.stringify(position.coords.longitude);
-      return {latitude: lat, longitude: long};
+      lat = JSON.stringify(position.coords.latitude);
+      long = JSON.stringify(position.coords.longitude);
+      console.log({ latitude: lat, longitude: long });
     }, (error) => {
       Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
     }
     )
+    // console.log("inside loc", { latitude: lat, longitude: long });
+  };
+
+  const checkLocationPermossion = async () => {
+    const hasPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+    if (hasPermission) {
+      getCurrentPosition();
+    } else {
+      return Linking.openSettings();
+    }
   }
 
   const openRBSheet = (value) => {
@@ -47,6 +59,8 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
   const setFile = (image) => {
     if (option === "optn1") {
       const locData = getCurrentPosition();
+      // const locData = checkLocationPermossion();
+      console.log("locData1 =>", locData);
       setImages({ ...images, sign_board_pic: image, sign_board_pic_loc: locData })
     }
     if (option === "optn2") {
