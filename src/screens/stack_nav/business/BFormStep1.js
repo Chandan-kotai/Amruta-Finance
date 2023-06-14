@@ -218,6 +218,7 @@ const BFormStep1 = ({ nextStep, setStep1, id, type }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
+                    keyboardType='number-pad'
                     autoCorrect={false}
                     maxLength={10}
                     placeholder={"Enter Applicant’s Phone Number"}

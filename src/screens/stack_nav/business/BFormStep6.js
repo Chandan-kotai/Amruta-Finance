@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, TextInput, TouchableOpacity, Image, Alert, PermissionsAndroid, Linking } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../../utils/CustomButton';
-import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import CustomLoader from '../../../utils/CustomLoader';

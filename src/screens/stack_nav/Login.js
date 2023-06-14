@@ -6,12 +6,14 @@ import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Api } from '../../services/api';
+import CustomLoader from '../../utils/CustomLoader';
 
 
 const Login = ({ navigation }) => {
     const [showPassword, setShowPassword] = useState(false);
     const [formValue, setFormValue] = useState({ username: "", password: "" });
-    const [formError, setFormError] = useState({})
+    const [formError, setFormError] = useState({});
+    const [status, setStatus] = useState(false)
 
     const handleLogin = () => {
         const validationErrors = validateData();
@@ -59,7 +61,9 @@ const Login = ({ navigation }) => {
         }
 
         try {
+            setStatus(true);
             const res = await axios(config);
+            setStatus(false);
             // console.log(res.data);
             if (res?.data?.Status === "true") {
                 AsyncStorage.setItem('@user', JSON.stringify(res?.data?.data[0]))
@@ -172,6 +176,7 @@ const Login = ({ navigation }) => {
                     </View>
                 </View>
             </ScrollView>
+            <CustomLoader loader={status} />
         </SafeAreaView>
     )
 }

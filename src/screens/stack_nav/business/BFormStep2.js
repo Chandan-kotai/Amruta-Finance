@@ -137,6 +137,7 @@ const BFormStep2 = ({ nextStep, setStep2 }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
+                    keyboardType='number-pad'
                     autoCorrect={false}
                     placeholder={"Enter No of Yrs in Present Address"}
                     value={formValue.no_of_year}

@@ -206,37 +206,37 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
 
   }
 
-  const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Amruta Finance",
-          message: 'Amruta Finance needs to access your Location',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      )
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        setStatus(true)
-        Geolocation.getCurrentPosition(position => {
-          let lat = JSON.stringify(position.coords.latitude);
-          let long = JSON.stringify(position.coords.longitude);
-          // console.log(lat + "," + long);
-          setStatus(false)
-          setFormValue({ ...formValue, lat_long: lat + "," + long })
-        }, (error) => {
-          Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-        }
-        )
+  // const requestLocationPermission = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: "Amruta Finance",
+  //         message: 'Amruta Finance needs to access your Location',
+  //         buttonNegative: 'Cancel',
+  //         buttonPositive: 'OK',
+  //       },
+  //     )
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       setStatus(true)
+  //       Geolocation.getCurrentPosition(position => {
+  //         let lat = JSON.stringify(position.coords.latitude);
+  //         let long = JSON.stringify(position.coords.longitude);
+  //         // console.log(lat + "," + long);
+  //         setStatus(false)
+  //         setFormValue({ ...formValue, lat_long: lat + "," + long })
+  //       }, (error) => {
+  //         Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+  //       }
+  //       )
 
-      } else {
-        Alert.alert("Permission Denied!!!")
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }
+  //     } else {
+  //       Alert.alert("Permission Denied!!!")
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   useEffect(() => {
 
