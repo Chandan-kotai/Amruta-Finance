@@ -56,15 +56,17 @@ const reportStatCat = [
     }
 ]
 
-const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
+const RFormStep1 = ({ nextStep, setStep1, item }) => {
+    const { address, allocation_date_time, applicant_id, applicant_name, applicant_phone, city, fi_reference_no, verification_type } = item;
     const [formValue, setFormValue] = useState({
-        applicant_id: id,
-        verification_type: type,
-        fi_reference_no: "",
-        applicant_name: "",
-        applicant_phone: "",
-        residence_address: "",
-        allocation_date_time: "",
+        applicant_id: applicant_id,
+        verification_type: verification_type,
+        fi_reference_no: fi_reference_no,
+        applicant_name: applicant_name,
+        applicant_phone: applicant_phone,
+        residence_address: address,
+        city: city,
+        allocation_date_time: allocation_date_time,
         visit_date_time: "",
         fos_name: "",
         report_status: "",
@@ -74,7 +76,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
         landmark: ""
     });
     const [formError, setFormError] = useState({})
-    const [address, setAddress] = useState(false);
+    const [isAddress, setIsAddress] = useState(false);
     const [open1, setOpen1] = useState(false);
     const [open2, setOpen2] = useState(false);
 
@@ -85,7 +87,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
         const validationErrors = validateForm();
         setFormError(validationErrors);
 
-        formValue.address_confirm = address ? "Yes" : "No"
+        formValue.address_confirm = isAddress ? "Yes" : "No"
 
         if (Object.keys(validationErrors).length === 0) {
             setStep1(formValue)
@@ -193,6 +195,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    editable={false}
                     placeholder={"Fl Reference No"}
                     value={formValue.fi_reference_no}
                     onChangeText={value => setFormValue({ ...formValue, fi_reference_no: value })}
@@ -208,6 +211,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    editable={false}
                     placeholder={"Enter Applicant’s Name"}
                     value={formValue.applicant_name}
                     onChangeText={value => setFormValue({ ...formValue, applicant_name: value })}
@@ -223,6 +227,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     keyboardType='number-pad'
+                    editable={false}
                     autoCorrect={false}
                     placeholder={"Enter Applicant’s Phone Number"}
                     value={formValue.applicant_phone}
@@ -239,12 +244,29 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
+                    editable={false}
                     placeholder={"Enter Residence Address"}
                     value={formValue.residence_address}
                     onChangeText={value => setFormValue({ ...formValue, residence_address: value })}
                 />
                 {formError?.residence_address ?
                     <Text style={styles.error}>{formError.residence_address}</Text>
+                    : null
+                }
+
+                {/* // City */}
+                <Text style={[styles.labels, { marginTop: 15, }]}>City</Text>
+                <TextInput
+                    style={styles.inputBox}
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    editable={false}
+                    placeholder={"Enter Residence Address"}
+                    value={formValue.city}
+                    onChangeText={value => setFormValue({ ...formValue, city: value })}
+                />
+                {formError?.city ?
+                    <Text style={styles.error}>{formError.city}</Text>
                     : null
                 }
 
@@ -259,7 +281,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                         value={formValue.allocation_date_time}
                     />
 
-                    <TouchableOpacity style={{ position: "absolute", top: 9, right: 10 }} onPress={() => setOpen1(true)}>
+                    {/* <TouchableOpacity style={{ position: "absolute", top: 9, right: 10 }} onPress={() => setOpen1(true)}>
                         <Image style={{}} source={require("../../../assets/icons/calendar.png")} />
                     </TouchableOpacity>
 
@@ -275,7 +297,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                         onCancel={() => {
                             setOpen1(false)
                         }}
-                    />
+                    /> */}
                 </View>
 
                 {formError?.allocation_date_time ?
@@ -363,7 +385,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                     editable={false}
                     placeholder={"Enter Photo Count"}
                     value={formValue.photo_count}
-                    // onChangeText={value => setFormValue({ ...formValue, photo_count: value })}
+                // onChangeText={value => setFormValue({ ...formValue, photo_count: value })}
                 />
                 {formError?.photo_count ?
                     <Text style={styles.error}>{formError.photo_count}</Text>
@@ -393,7 +415,7 @@ const RFormStep1 = ({ nextStep, setStep1, id, type }) => {
                 }
 
                 {/* // Address Confirmed */}
-                <CustomSwitch isEnabled={address} setIsEnabled={setAddress} text={"Address Confirmed"} />
+                <CustomSwitch isEnabled={isAddress} setIsEnabled={setIsAddress} text={"Address Confirmed"} />
 
                 {/* // Landmark */}
                 <Text style={[styles.labels, { marginTop: 15, }]}>Landmark</Text>

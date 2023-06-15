@@ -30,6 +30,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('applicant_name', step1.applicant_name);
       formData.append('applicant_phone', step1.applicant_phone);
       formData.append('residence_address', step1.residence_address);
+      formData.append('city', step1.city);
       formData.append('allocation_date_time', step1.allocation_date_time);
       formData.append('visit_date_time', step1.visit_date_time);
       formData.append('fos_name', step1.fos_name);

@@ -47,11 +47,12 @@ const Dashboard = ({ navigation, route }) => {
     }
 
     const navigateForm = (item) => {
+        // console.log(item);
         if (item?.verification_type === "Business") {
-            navigation.navigate("bform", { id: item?.applicant_id, type: item?.verification_type })
+            navigation.navigate("bform", { item: item });
         }
         if (item?.verification_type === "Residence") {
-            navigation.navigate("rform", { id: item?.applicant_id, type: item?.verification_type })
+            navigation.navigate("rform", { item: item });
         }
     }
 

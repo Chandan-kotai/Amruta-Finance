@@ -17,7 +17,7 @@ const BForm = ({ navigation, route }) => {
     const [step4, setStep4] = useState();
     const [step5, setStep5] = useState();
     const [user, setUser] = useState();
-    const { id, type } = route?.params;
+    const { item } = route?.params;
 
 
     // console.log("step 1=>", step1);
@@ -46,7 +46,7 @@ const BForm = ({ navigation, route }) => {
         checkUser();
 
         if (step === 1) {
-            setComponent(<BFormStep1 nextStep={nextStep} setStep1={setStep1} id={id} type={type} />)
+            setComponent(<BFormStep1 nextStep={nextStep} setStep1={setStep1} item={item} />)
         }
         else if (step === 2) {
             setComponent(<BFormStep2 nextStep={nextStep} setStep2={setStep2} />)
