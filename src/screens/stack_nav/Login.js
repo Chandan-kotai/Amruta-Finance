@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
     const userLogin = async (formData) => {
         const config = {
             method: "post",
-            url: Api+"/login",
+            url: Api + "/login",
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -64,7 +64,7 @@ const Login = ({ navigation }) => {
             setStatus(true);
             const res = await axios(config);
             setStatus(false);
-            // console.log(res.data);
+            console.log(res?.data?.data[0]?.id);
             if (res?.data?.Status === "true") {
                 AsyncStorage.setItem('@user', JSON.stringify(res?.data?.data[0]))
                 Toast.show({
@@ -72,7 +72,7 @@ const Login = ({ navigation }) => {
                     text1: "Login Successful",
                     text2: "Welcome " + res?.data?.data[0].name,
                 })
-                navigation.replace("dnav");
+                navigation.replace("dnav", { id: res?.data?.data[0]?.id });
                 setFormValue({ email: "", password: "" });
             } else {
                 Toast.show({
@@ -91,12 +91,12 @@ const Login = ({ navigation }) => {
         }
     }
 
-    const checkUser = async ()=>{
+    const checkUser = async () => {
         const data = await AsyncStorage.getItem('@user')
         const user = JSON.parse(data)
         // console.log(data, user)
-        if(user){
-            navigation.replace("dnav")
+        if (user) {
+            navigation.replace("dnav", { id: user?.id });
         }
     }
 

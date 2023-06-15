@@ -6,20 +6,22 @@ import CustomLoader from '../../utils/CustomLoader';
 import Toast from 'react-native-toast-message';
 import { Api } from '../../services/api';
 
-const Dashboard = ({ navigation }) => {
+const Dashboard = ({ navigation, route }) => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false);
     const [taskList, setTaskList] = useState([])
+    const { id } = route?.params;
 
     const totalSubmited = taskList?.filter(item => item?.status === "true")
 
     const fetchTaskList = async () => {
+        // console.log("user_id =>", route?.params);
         const config = {
             method: "get",
-            url: Api + "/get-all",
+            url: "http://192.168.1.14/amruta/public/api/get-all/" + id,
         }
-
+        // console.log(config);
         try {
             setStatus(true)
             const res = await axios(config);
@@ -73,7 +75,7 @@ const Dashboard = ({ navigation }) => {
             }
 
             const hasPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-            if(!hasPermission){
+            if (!hasPermission) {
                 Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
             }
         } catch (err) {
