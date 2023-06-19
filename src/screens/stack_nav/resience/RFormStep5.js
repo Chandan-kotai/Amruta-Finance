@@ -24,21 +24,9 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
     customer_pic_loc: "",
   })
   const [option, setOption] = useState("");
-  const [locData, setLocData] = useState();
 
   // console.log("image from state=>", images.residence_setup_pic);
   // console.log("image from var pics=>", pics);
-
-  const getCurrentPosition = () => {
-    Geolocation.getCurrentPosition(position => {
-      let lat = JSON.stringify(position.coords.latitude);
-      let long = JSON.stringify(position.coords.longitude);
-      setLocData(lat + "," + long);
-    }, (error) => {
-      Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-    }
-    )
-  };
 
   const openRBSheet = (value) => {
     refRBSheet.current.open();
@@ -46,59 +34,66 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
   }
 
   const setFile = (image) => {
-    if (option === "optn1") {
-      console.log(locData);
-      if (locData) {
-        setImages({ ...images, building_pic: image, building_pic_loc: locData })
-      } else {
-        Alert.alert("Please Try Again!!");
+    Geolocation.getCurrentPosition(position => {
+      let lat = JSON.stringify(position.coords.latitude);
+      let long = JSON.stringify(position.coords.longitude);
+      const locData = lat + "," + long;
+
+      if (option === "optn1") {
+        if (locData) {
+          setImages({ ...images, building_pic: image, building_pic_loc: locData })
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
-    }
-    if (option === "optn2") {
-      if (locData) {
-        setImages({ ...images, name_plate_pic: image, name_plate_pic_loc: locData })
-      } else {
-        Alert.alert("Please Try Again!!");
+      if (option === "optn2") {
+        if (locData) {
+          setImages({ ...images, name_plate_pic: image, name_plate_pic_loc: locData })
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
-    }
-    if (option === "optn3") {
-      if (locData) {
-        setImages(prevState => ({
-          ...prevState,
-          residence_setup_pic: [...prevState.residence_setup_pic, image[0]],
-          residence_setup_pic_loc: locData
-        }))
-      } else {
-        Alert.alert("Please Try Again!!");
+      if (option === "optn3") {
+        if (locData) {
+          setImages(prevState => ({
+            ...prevState,
+            residence_setup_pic: [...prevState.residence_setup_pic, image[0]],
+            residence_setup_pic_loc: locData
+          }))
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
-    }
-    if (option === "optn4") {
-      if (locData) {
-        setImages({ ...images, landmark_pic: image, landmark_pic_loc: locData })
-      } else {
-        Alert.alert("Please Try Again!!");
+      if (option === "optn4") {
+        if (locData) {
+          setImages({ ...images, landmark_pic: image, landmark_pic_loc: locData })
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
-    }
-    if (option === "optn5") {
-      if (locData) {
-        setImages({ ...images, kyc_pic: image, kyc_pic_loc: locData })
-      } else {
-        Alert.alert("Please Try Again!!");
+      if (option === "optn5") {
+        if (locData) {
+          setImages({ ...images, kyc_pic: image, kyc_pic_loc: locData })
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
-    }
-    if (option === "optn6") {
-      if (locData) {
-        setImages({ ...images, customer_pic: image, customer_pic_loc: locData })
-      } else {
-        Alert.alert("Please Try Again!!");
+      if (option === "optn6") {
+        if (locData) {
+          setImages({ ...images, customer_pic: image, customer_pic_loc: locData })
+        } else {
+          Alert.alert("Please Try Again!!");
+        }
       }
+    }, (error) => {
+      Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
     }
+    );
   }
 
   const openCamera = async () => {
     try {
-      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-      getCurrentPosition();
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         const res = await launchCamera({ saveToPhotos: true, mediaType: "photo" })
         // console.log("image from camera=>", res?.assets);
@@ -115,26 +110,24 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
   const openGallery = async () => {
     try {
       if (Platform.Version >= 31) {
-        const granted = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES)
-        getCurrentPosition();
+        const granted = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" })
-          setFile(res?.assets)
+          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
+          setFile(res?.assets);
           // console.log("image from gallery=>", res?.assets[0]);
-          closeRBSheet()
+          closeRBSheet();
         } else {
-          Alert.alert("Permission Denied!!!")
+          Alert.alert("Permission Denied!!!");
         }
       } else {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
-        getCurrentPosition();
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" })
+          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
           // console.log("image from gallery=>", res?.assets[0]);
-          setFile(res?.assets)
-          closeRBSheet()
+          setFile(res?.assets);
+          closeRBSheet();
         } else {
-          Alert.alert("Permission Denied!!!")
+          Alert.alert("Permission Denied!!!");
         }
       }
 
