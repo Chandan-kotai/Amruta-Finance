@@ -174,7 +174,7 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
   const sendFormData = async (formData) => {
     var config = {
       method: "post",
-      url: Api+"/add-applicant2",
+      url: Api + "/add-applicant2",
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -184,17 +184,17 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
     // console.log("form data func =>", formData);
 
     try {
-      setStatus(true)
+      setStatus(true);
       const res = await axios(config);
-      setStatus(false)
+      setStatus(false);
       console.log("server response=>", res.data);
       if (res?.data?.result === "success") {
-        navigation.replace("fmsg")
+        navigation.replace("fmsg");
       } else {
         Toast.show({
           type: "error",
           text1: "Something Went Wrong. Pleaase Try Again",
-        })
+        });
       }
     } catch (exc) {
       console.log("error=>", exc);
@@ -202,7 +202,8 @@ const RFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
         type: "error",
         text1: exc.message,
         text2: "Something Went Wrong. Pleaase Try Again",
-      })
+      });
+      setStatus(false);
     }
 
   }

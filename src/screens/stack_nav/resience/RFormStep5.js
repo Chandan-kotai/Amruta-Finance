@@ -95,12 +95,12 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
     try {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        const res = await launchCamera({ saveToPhotos: true, mediaType: "photo" })
+        const res = await launchCamera({ saveToPhotos: false, mediaType: "photo" });
         // console.log("image from camera=>", res?.assets);
-        setFile(res?.assets)
-        closeRBSheet()
+        setFile(res?.assets);
+        closeRBSheet();
       } else {
-        Alert.alert("Permission Denied!!!")
+        Alert.alert("Permission Denied!!!");
       }
     } catch (err) {
       console.log(err);

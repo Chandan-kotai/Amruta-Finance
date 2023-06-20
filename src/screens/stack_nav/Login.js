@@ -60,18 +60,20 @@ const Login = ({ navigation }) => {
             data: formData,
         }
 
+        // console.log(config);
+
         try {
             setStatus(true);
             const res = await axios(config);
             setStatus(false);
-            console.log(res?.data?.data[0]?.id);
+            // console.log(res?.data);
             if (res?.data?.Status === "true") {
                 AsyncStorage.setItem('@user', JSON.stringify(res?.data?.data[0]))
                 Toast.show({
                     type: "success",
                     text1: "Login Successful",
                     text2: "Welcome " + res?.data?.data[0].name,
-                })
+                });
                 navigation.replace("dnav", { id: res?.data?.data[0]?.id });
                 setFormValue({ email: "", password: "" });
             } else {
@@ -79,7 +81,7 @@ const Login = ({ navigation }) => {
                     type: "error",
                     text1: "Invalid Username or Password",
                     text2: "Pleaase Try Again",
-                })
+                });
             }
 
         } catch (exc) {
@@ -87,7 +89,8 @@ const Login = ({ navigation }) => {
                 type: "error",
                 text1: exc.message,
                 text2: "Something Went Wrong. Pleaase Try Again",
-            })
+            });
+            setStatus(false);
         }
     }
 

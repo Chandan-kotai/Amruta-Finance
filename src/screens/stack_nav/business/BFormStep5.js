@@ -115,7 +115,7 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         // console.log("from if");
-        const res = await launchCamera({ saveToPhotos: true, mediaType: "photo" });
+        const res = await launchCamera({ saveToPhotos: false, mediaType: "photo" });
         // console.log("image from camera=>", res?.assets);
         setFile(res?.assets);
         closeRBSheet();

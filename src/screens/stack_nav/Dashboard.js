@@ -23,18 +23,18 @@ const Dashboard = ({ navigation, route }) => {
         }
         // console.log(config);
         try {
-            setStatus(true)
+            setStatus(true);
             const res = await axios(config);
-            setStatus(false)
+            setStatus(false);
             // console.log("response=>", res?.data);
             if (res?.data) {
-                setTaskList(res?.data)
+                setTaskList(res?.data);
             } else {
                 Toast.show({
                     type: "info",
                     text1: "No Records Found",
                     text2: "Pleaase Try Again"
-                })
+                });
             }
         } catch (exc) {
             // console.log("Error=>", exc);
@@ -42,7 +42,8 @@ const Dashboard = ({ navigation, route }) => {
                 type: "error",
                 text1: exc.message,
                 text2: "Something Went Wrong. Pleaase Try Again",
-            })
+            });
+            setStatus(false);
         }
     }
 
