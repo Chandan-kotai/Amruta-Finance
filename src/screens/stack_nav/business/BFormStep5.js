@@ -24,22 +24,9 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
     customer_pic_loc: ""
   })
   const [option, setOption] = useState("");
-  // const [locData, setLocData] = useState("22.568777,88.4336406");
 
   // console.log("image from state=>", images.office_setup_pic);
   // console.log("image from var pics=>", pics);
-
-  // const getCurrentPosition = () => {
-  //   Geolocation.getCurrentPosition(position => {
-  //     let lat = JSON.stringify(position.coords.latitude);
-  //     let long = JSON.stringify(position.coords.longitude);
-  //     setLocData(lat + "," + long);
-  //     // console.log(lat + "," + long);
-  //   }, (error) => {
-  //     Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-  //   }
-  //   )
-  // };
 
   const openRBSheet = (value) => {
     refRBSheet.current.open();
@@ -136,15 +123,20 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
   const openGallery = async () => {
     try {
       if (Platform.Version >= 31) {
-        // console.log("from if");
         const granted = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" })
+          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
           setFile(res?.assets);
           // console.log("image from gallery=>", res?.assets[0]);
           closeRBSheet();
         } else {
-          Alert.alert("Permission Denied!!!");
+          // Alert.alert("Permission Denied!!!");
+          // const granted = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
+          await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
+          setFile(res?.assets);
+          // console.log("image from gallery=>", res?.assets[0]);
+          closeRBSheet();
         }
       } else {
         // console.log("from else");
