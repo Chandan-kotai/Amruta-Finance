@@ -19,7 +19,7 @@ const Dashboard = ({ navigation, route }) => {
         // console.log("user_id =>", route?.params);
         const config = {
             method: "get",
-            url: "http://192.168.1.14/amruta/public/api/get-all/" + id,
+            url: Api + "/get-all/" + id,
         }
         // console.log(config);
         try {
