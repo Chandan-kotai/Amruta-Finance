@@ -124,7 +124,11 @@ const RFormStep5 = ({ nextStep, setStep5 }) => {
           // console.log("image from gallery=>", res?.assets[0]);
           closeRBSheet();
         } else {
-          Alert.alert("Permission Denied!!!");
+          await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
+          const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
+          setFile(res?.assets);
+          // console.log("image from gallery=>", res?.assets[0]);
+          closeRBSheet();
         }
       } else {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);

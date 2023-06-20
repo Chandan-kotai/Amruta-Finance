@@ -130,8 +130,6 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
           // console.log("image from gallery=>", res?.assets[0]);
           closeRBSheet();
         } else {
-          // Alert.alert("Permission Denied!!!");
-          // const granted = await request(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
           await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE);
           const res = await launchImageLibrary({ saveToPhotos: true, mediaType: "photo" });
           setFile(res?.assets);
