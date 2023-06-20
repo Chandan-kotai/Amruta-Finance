@@ -81,7 +81,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
 
       // step 5
       formData.append('sign_board_pic', {
-        type: step5?.sign_board_pic[0].type,
+        type: step5?.sign_board_pic[0]?.type,
         uri: step5?.sign_board_pic[0]?.uri,
         name: step5?.sign_board_pic[0]?.fileName
       });
@@ -89,7 +89,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('sign_board_pic_loc', step5?.sign_board_pic_loc);
 
       formData.append('stock_pic', {
-        type: step5?.stock_pic[0].type,
+        type: step5?.stock_pic[0]?.type,
         uri: step5?.stock_pic[0]?.uri,
         name: step5?.stock_pic[0]?.fileName
       });
@@ -98,16 +98,16 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
 
       step5?.office_setup_pic?.forEach((image, index) => {
         formData.append(`office_setup_pic_${index}`, {
-          uri: image.uri,
-          type: image.type,
-          name: image.fileName
+          uri: image?.uri,
+          type: image?.type,
+          name: image?.fileName
         });
       });
 
       formData.append('office_setup_pic_loc', step5?.office_setup_pic_loc);
 
       formData.append('landmark_pic', {
-        type: step5?.landmark_pic[0].type,
+        type: step5?.landmark_pic[0]?.type,
         uri: step5?.landmark_pic[0]?.uri,
         name: step5?.landmark_pic[0]?.fileName
       });
@@ -115,7 +115,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('landmark_pic_loc', step5?.landmark_pic_loc);
 
       formData.append('kyc_pic', {
-        type: step5?.kyc_pic[0].type,
+        type: step5?.kyc_pic[0]?.type,
         uri: step5?.kyc_pic[0]?.uri,
         name: step5?.kyc_pic[0]?.fileName
       });
@@ -123,7 +123,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       formData.append('kyc_pic_loc', step5?.kyc_pic_loc);
 
       formData.append('customer_pic', {
-        type: step5?.customer_pic[0].type,
+        type: step5?.customer_pic[0]?.type,
         uri: step5?.customer_pic[0]?.uri,
         name: step5?.customer_pic[0]?.fileName
       });
@@ -177,7 +177,7 @@ const BFormStep6 = ({ navigation, step1, step2, step3, step4, step5, username })
       data: formData,
     }
 
-    console.log("form data func =>", formData);
+    // console.log("form data func =>", formData);
 
     try {
       setStatus(true);

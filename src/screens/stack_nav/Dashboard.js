@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList, PermissionsAndroid, Alert, Linking } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Image, FlatList, PermissionsAndroid, Alert, Linking, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-native-date-picker'
 import axios from 'axios';
@@ -10,7 +10,8 @@ const Dashboard = ({ navigation, route }) => {
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(false);
-    const [taskList, setTaskList] = useState([])
+    const [taskList, setTaskList] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
     const { id } = route?.params;
 
     const totalSubmited = taskList?.filter(item => item?.status === "true")
@@ -69,7 +70,7 @@ const Dashboard = ({ navigation, route }) => {
                 // },
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                console.log("granted");
+                // console.log("granted");
             } else {
                 Alert.alert("Amruta Finance", "This application needs to access the device location to function properly.", [
                     { text: 'OK', onPress: () => Linking.openSettings() }
@@ -85,14 +86,22 @@ const Dashboard = ({ navigation, route }) => {
         }
     }
 
+    const onRefresh = () => {
+        setRefreshing(true);
+        setTimeout(() => {
+            fetchTaskList();
+            setRefreshing(false);
+        }, 2000);
+    }
+
     useEffect(() => {
-        requestLocationPermission();
         fetchTaskList();
+        requestLocationPermission();
     }, [])
 
     return (
         <SafeAreaView style={styles.parent}>
-            <View>
+            <View style={{flex: 1}}>
                 {/* // head logo */}
                 <View>
                     <Image style={styles.img} source={require("../../assets/images/logo.png")} />
@@ -100,12 +109,12 @@ const Dashboard = ({ navigation, route }) => {
 
                 {/* // head options */}
                 <View style={styles.optionsWrap}>
-                    <TouchableOpacity onPress={() => setOpen(true)}>
-                        <View style={styles.calendar}>
-                            <Image style={{ width: 20, height: 20, marginRight: 5 }} source={require("../../assets/icons/calendar.png")} />
-                            <Text style={{ color: "#000", fontSize: 16 }}>{date.toDateString()}</Text>
-                        </View>
-                    </TouchableOpacity>
+                    {/* <TouchableOpacity onPress={() => setOpen(true)}> */}
+                    <View style={styles.calendar}>
+                        <Image style={{ width: 20, height: 20, marginRight: 5 }} source={require("../../assets/icons/calendar.png")} />
+                        <Text style={{ color: "#000", fontSize: 16 }}>{date.toDateString()}</Text>
+                    </View>
+                    {/* </TouchableOpacity> */}
 
                     <DatePicker
                         modal
@@ -150,27 +159,41 @@ const Dashboard = ({ navigation, route }) => {
                         <Text style={{ color: "#000", fontSize: 17 }}>Status</Text>
                     </View>
 
+                    {/* refresh control */}
+                    {/* <TouchableOpacity onPress={()=> fetchTaskList()}> */}
+                        <View style={styles.refreshBtn}>
+                            <Image style={{ width: 15, height: 15 }} source={require("../../assets/icons/arrow-down-line.png")} />
+                            <Text style={{ fontSize: 12, color: "#000", marginLeft: 5 }}>Pull Down to Refresh</Text>
+                        </View>
+                    {/* </TouchableOpacity> */}
+
                     {/* // content */}
                     {taskList?.length ?
                         <FlatList
                             data={taskList}
+                            showsVerticalScrollIndicator={false}
+                            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#48B846"]} />}
                             keyExtractor={(item, index) => index}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity
-                                    onPress={() => navigateForm(item)}
-                                    disabled={item?.status === "true" ? true : false}
-                                >
-                                    <View style={styles.content}>
-                                        <Text style={{ color: "#000" }}>{item?.applicant_id}</Text>
-                                        <Text
-                                            style={
-                                                item?.status === "true" ? { color: "#48B846" } : { color: "#EB3A79" }
-                                            }
-                                        >
-                                            {item?.status === "true" ? "Submited" : "Pending"}
-                                        </Text>
-                                    </View>
-                                </TouchableOpacity>
+                            renderItem={({ item, index }) => (
+                                <View>
+                                    {index === 0 ? <View style={{ marginBottom: 15 }}></View> : null}
+                                    <TouchableOpacity
+                                        onPress={() => navigateForm(item)}
+                                        disabled={item?.status === "true" ? true : false}
+                                    >
+                                        <View style={styles.content}>
+                                            <Text style={{ color: "#000" }}>{item?.applicant_id}</Text>
+                                            <Text
+                                                style={
+                                                    item?.status === "true" ? { color: "#48B846" } : { color: "#EB3A79" }
+                                                }
+                                            >
+                                                {item?.status === "true" ? "Submited" : "Pending"}
+                                            </Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    {index === taskList?.length - 1 ? <View style={{ marginBottom: (60 * taskList?.length) + 35 }}></View> : null}
+                                </View>
                             )}
                         />
                         :
@@ -241,10 +264,17 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         marginHorizontal: 15,
-        marginBottom: 15,
         borderBottomColor: "#A39A9A",
         borderBottomWidth: 1,
         paddingBottom: 10,
+    },
+    refreshBtn: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginHorizontal: 15,
+        backgroundColor: "#eceaea",
+        paddingVertical: 5,
     },
     content: {
         flexDirection: "row",
@@ -254,7 +284,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: "#F2F2F2",
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 10,
+        borderRadius: 5
     },
     nrFound: {
         alignItems: "center",

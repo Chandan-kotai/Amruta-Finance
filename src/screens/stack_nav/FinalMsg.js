@@ -1,11 +1,19 @@
 import { Text, View, SafeAreaView, Image } from 'react-native'
 import React, { useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const FinalMsg = ({ navigation }) => {
     useEffect(() => {
-        setTimeout(() => {
-            navigation.replace("dnav")
-        }, 1500)
+        const getUser = async ()=>{
+            const res = await AsyncStorage.getItem("@user");
+            const user = JSON.parse(res);
+            // console.log(user);
+            const {id} = user;
+            setTimeout(() => {
+                navigation.replace("dnav", {id: id});
+            }, 1500)
+        }
+        getUser();
     }, [])
 
     return (
