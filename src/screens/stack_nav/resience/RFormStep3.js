@@ -444,7 +444,7 @@ const RFormStep3 = ({ nextStep, setStep3 }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    placeholder={"Enter Reason"}
+                    placeholder={"Enter Neighbor Address/ Details"}
                     value={formValue.neighbor_address_1}
                     onChangeText={value => setFormValue({ ...formValue, neighbor_address_1: value })}
                 />
@@ -516,7 +516,7 @@ const RFormStep3 = ({ nextStep, setStep3 }) => {
                     style={styles.inputBox}
                     autoCapitalize="none"
                     autoCorrect={false}
-                    placeholder={"Enter Reason"}
+                    placeholder={"Enter Neighbor Address/ Details"}
                     value={formValue.neighbor_address_2}
                     onChangeText={value => setFormValue({ ...formValue, neighbor_address_2: value })}
                 />
