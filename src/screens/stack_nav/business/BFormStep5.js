@@ -114,13 +114,18 @@ const BFormStep5 = ({ nextStep, setStep5 }) => {
     try {
       const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA);
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        // console.log("from if");
-        const res = await launchCamera({ saveToPhotos: false, mediaType: "photo" });
-        // console.log("image from camera=>", res?.assets);
-        setFile(res?.assets);
-        closeRBSheet();
+        if (Platform.Version >= 31) {
+          const res = await launchCamera({ saveToPhotos: false, mediaType: "photo" });
+          // console.log("image from camera=>", res?.assets);
+          setFile(res?.assets);
+          closeRBSheet();
+        } else {
+          const res = await launchCamera({ saveToPhotos: true, mediaType: "photo" });
+          // console.log("image from camera=>", res?.assets);
+          setFile(res?.assets);
+          closeRBSheet();
+        }
       } else {
-        // console.log("from else");
         Alert.alert("Permission Denied!!!");
       }
     } catch (err) {
