@@ -324,6 +324,7 @@ const BFormStep3 = ({ nextStep, setStep3 }) => {
                 <TextInput
                     style={styles.inputBox}
                     autoCapitalize="none"
+                    keyboardType='number-pad'
                     autoCorrect={false}
                     placeholder={"Enter No of Employees Seen"}
                     value={formValue.no_of_emp_seen}

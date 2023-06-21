@@ -90,6 +90,7 @@ const BFormStep1 = ({ nextStep, setStep1, item }) => {
         formValue.address_confirm = isAddress ? "Yes" : "No"
 
         if (Object.keys(validationErrors).length === 0) {
+            // console.log(formValue);
             setStep1(formValue)
             Toast.show({
                 type: "success",
