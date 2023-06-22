@@ -71,7 +71,7 @@ const Dashboard = ({ navigation, route }) => {
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 // console.log("granted");
-                Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+                // Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
             } else {
                 Alert.alert("Amruta Finance", "This application needs to access the device location to function properly.", [
                     { text: 'OK', onPress: () => Linking.openSettings() }
