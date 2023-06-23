@@ -5,6 +5,7 @@ import axios from 'axios';
 import CustomLoader from '../../utils/CustomLoader';
 import Toast from 'react-native-toast-message';
 import { Api } from '../../services/api';
+import Geolocation from '@react-native-community/geolocation';
 
 const Dashboard = ({ navigation, route }) => {
     const [date, setDate] = useState(new Date());
@@ -70,8 +71,12 @@ const Dashboard = ({ navigation, route }) => {
                 // },
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                // console.log("granted");
-                // Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+                Geolocation.getCurrentPosition(position => {
+                    // console.log("granted");
+                }, (error) => {
+                    Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
+                }
+                );
             } else {
                 Alert.alert("Amruta Finance", "This application needs to access the device location to function properly.", [
                     { text: 'OK', onPress: () => Linking.openSettings() }
@@ -102,7 +107,7 @@ const Dashboard = ({ navigation, route }) => {
 
     return (
         <SafeAreaView style={styles.parent}>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
                 {/* // head logo */}
                 <View>
                     <Image style={styles.img} source={require("../../assets/images/logo.png")} />
@@ -162,10 +167,10 @@ const Dashboard = ({ navigation, route }) => {
 
                     {/* refresh control */}
                     {/* <TouchableOpacity onPress={()=> fetchTaskList()}> */}
-                        <View style={styles.refreshBtn}>
-                            <Image style={{ width: 15, height: 15 }} source={require("../../assets/icons/arrow-down-line.png")} />
-                            <Text style={{ fontSize: 12, color: "#000", marginLeft: 5 }}>Pull Down to Refresh</Text>
-                        </View>
+                    <View style={styles.refreshBtn}>
+                        <Image style={{ width: 15, height: 15 }} source={require("../../assets/icons/arrow-down-line.png")} />
+                        <Text style={{ fontSize: 12, color: "#000", marginLeft: 5 }}>Pull Down to Refresh</Text>
+                    </View>
                     {/* </TouchableOpacity> */}
 
                     {/* // content */}
